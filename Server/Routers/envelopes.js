@@ -25,4 +25,15 @@ envelopeRouter.get('/', (req, res) => {
   res.status(200).send(envelopes)
 });
 
+// Fetch specific envelope by Id
+envelopeRouter.get('/:envelopeId', (req, res) => {
+  const envelopeId = Number(req.params.envelopeId);
+  const envelope = envelopes.find(envelope => envelope.id === envelopeId);
+  if(envelope) {
+    res.status(200).send(envelope);
+  } else {
+    res.status(404).send();
+  }
+});
+
 module.exports = envelopeRouter;
