@@ -14,6 +14,9 @@ app.use(bodyParser.json());
 const envelopeRouter = require('./Server/Routers/envelopes');
 app.use('/envelopes', envelopeRouter);
 
+const transfersRouter = require('./Server/Routers/transfers');
+app.use('/envelopes/transfer', transfersRouter);
+
 app.listen(PORT, () => {
   console.log(`Personal Budget app listening on port ${PORT}`);
 });
