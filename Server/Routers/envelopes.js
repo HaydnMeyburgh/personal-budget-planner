@@ -28,9 +28,34 @@ envelopeRouter.get('/', (req, res) => {
 // Fetch specific envelope by Id
 envelopeRouter.get('/:envelopeId', (req, res) => {
   const envelopeId = Number(req.params.envelopeId);
-  const envelope = envelopes.find(envelope => envelope.id === envelopeId);
-  if(envelope) {
-    res.status(200).send(envelope);
+  const envelopeIndex = envelopes.findIndex(envelope => envelope.id === envelopeId);
+  if(envelopeIndex >= 0) {
+    res.status(200).send(envelopes[envelopeIndex]);
+  } else {
+    res.status(404).send();
+  }
+});
+
+// Delete envelope
+envelopeRouter.delete('/:envelopeId', (req,  res) => {
+  const envelopeId = Number(req.params.envelopeId);
+  const envelopeIndex = envelopes.findIndex(envelope => envelope.id === envelopeId);
+  if (envelopeIndex >= 0) {
+    envelopes.splice(envelopeIndex, 1);
+    res.status(204).send()
+  } else {
+    res.status(404).send()
+  }
+});
+
+//Updating an envelope, either the title or budget, or title and budget together.
+envelopeRouter.post('/:envelopeId', (req, res) => {
+  const envelopeId = Number(req.params.envelopeId);
+  const envelopeIndex = envelopes.findIndex(envelope => envelope.id === envelopeId); 
+  if(envelopeIndex >= 0) {                                                                 
+    const { title, budget } = req.body;
+    envelopes[envelopeIndex] = {id: envelopeId, title : title, budget: Number(budget)}
+    res.status(200).send(envelopes[envelopeIndex]);
   } else {
     res.status(404).send();
   }
