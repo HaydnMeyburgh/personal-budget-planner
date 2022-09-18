@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 // Mounting the envelopeRouter
-const envelopeRouter = require('./Server/Routers/envelopes');
+const envelopeRouter = require('./Server/Routes/envelopes');
 app.use('/envelopes', envelopeRouter);
 
 app.listen(PORT, () => {
