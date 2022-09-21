@@ -7,7 +7,7 @@ const {
   deleteEnvelope,
   updateEnvelope,
   transferBudget
-} = require('../../db/dbhelpers');
+} = require('../controllers/envelopes.controllers');
 
 envelopeRouter.post('/', createEnvelope); 
 
@@ -17,8 +17,8 @@ envelopeRouter.get('/:envelopeId', getEnvelopeById);
 
 envelopeRouter.delete('/:envelopeId', deleteEnvelope); 
 
-envelopeRouter.post('/:envelopeId', updateEnvelope); 
+envelopeRouter.put('/:envelopeId', updateEnvelope); 
 
-envelopeRouter.post('/transfer/:fromId/:toId', transferBudget); 
+envelopeRouter.put('/transfer/:fromId/:toId', transferBudget); 
 
 module.exports = envelopeRouter;
