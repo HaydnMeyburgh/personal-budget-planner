@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const dotenv = require('dotenv');
+
+dotenv.config({ path: "./db/config/config.env"});
 
 // Parsing middleware that parses request bodies into JSON
 const bodyParser = require('body-parser');
@@ -10,6 +12,7 @@ app.use(bodyParser.json());
 const envelopeRouter = require('./Server/Routes/envelopes');
 app.use('/envelopes', envelopeRouter);
 
+const PORT = process.env.DEV_PORT || 3000
 app.listen(PORT, () => {
   console.log(`Personal Budget app listening on port ${PORT}`);
 });
