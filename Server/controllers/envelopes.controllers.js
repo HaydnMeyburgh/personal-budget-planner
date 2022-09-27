@@ -2,9 +2,8 @@ const { db } = require('../../db/config/index')
 
 // Fetch all envelopes
 const getAllEnvelopes = async (req, res) => {
-  const query = "SELECT * FROM envelopes";
   try {
-    const envelopes = await db.query(query);
+    const envelopes = await db.query("SELECT * FROM envelopes");
     if(envelopes.rowCount < 1) {
       return res.status(404).send({
         message: "Cannot find records"
@@ -25,9 +24,8 @@ const getAllEnvelopes = async (req, res) => {
 // Fetch specific envelope by Id
 const getEnvelopeById = async(req, res) => {
   const {envelopeId} = req.params;
-  const query = "SELECT * FROM envelopes WHERE id =$1"
   try {
-    const envelope = await db.query(query, [envelopeId]);
+    const envelope = await db.query("SELECT * FROM envelopes WHERE id =$1", [envelopeId]);
     if(envelope.rowCount < 1) {
       return res.status(404).send({
         message: "Cannot find envelope"
@@ -49,9 +47,8 @@ const getEnvelopeById = async(req, res) => {
 /* using SERIAL in the database to auto increment id's */
 const createEnvelope = async(req, res, next) => {
   const {title, budget} = req.body;
-  const query = "INSERT INTO envelopes (title, budget) VALUES($1, $2) RETURNING *"
   try {
-    const newEnvelope = await db.query(query, [title, budget])
+    const newEnvelope = await db.query("INSERT INTO envelopes (title, budget) VALUES($1, $2) RETURNING *", [title, budget])
     if(newEnvelope.rowCount < 1) {
       return res.status(404).send({
         message: "cannot create envelope"
@@ -59,8 +56,7 @@ const createEnvelope = async(req, res, next) => {
     }
     res.status(201).send({
       status: "Success",
-      message: "New envelope created successfully",
-      data: newEnvelope.rows[0]
+      message: "New envelope created successfully"
     })
   } catch(err) {
     return res.status(500).send({
@@ -72,9 +68,8 @@ const createEnvelope = async(req, res, next) => {
 // Delete envelope
 const deleteEnvelope = async(req,  res) => {
   const {envelopeId} = req.params;
-  const query = "DELETE FROM envelopes WHERE id = $1 RETURNING *"
   try {
-    const deleteEnvelope = await db.query(query, [envelopeId]);
+    const deleteEnvelope = await db.query("DELETE FROM envelopes WHERE id = $1 RETURNING *", [envelopeId]);
     if(deleteEnvelope.rowCount < 1) {
       return res.status(404).send({
         message: "Cannot find envelope to delete"
@@ -95,9 +90,8 @@ const deleteEnvelope = async(req,  res) => {
 const updateEnvelope = async (req, res) => {
   const {envelopeId} = req.params;
   const { title, budget } = req.body;
-  const query = "UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3 RETURNING *"
   try {
-    const updateEnvelope = await db.query(query, [title, budget, envelopeId]);
+    const updateEnvelope = await db.query("UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3 RETURNING *", [title, budget, envelopeId]);
     if(updateEnvelope.rows < 1) {
       return res.status(404).send({
         message: "Could not update envelope"
@@ -105,8 +99,7 @@ const updateEnvelope = async (req, res) => {
     }
     res.status(200).send({
       status: "Success",
-      message: `Successfully updated envelope with id: ${envelopeId}`,
-      data: updateEnvelope.rows[0]
+      message: `Successfully updated envelope with id: ${envelopeId}`
     })
   } catch(err) {
     return res.status(500).send({
@@ -120,9 +113,8 @@ const updateEnvelope = async (req, res) => {
 const transferBudget = async(req, res) => {
   const {fromId, toId} = req.params;
   const {amount} = req.body;
-  const envelopeBudget = "SELECT budget FROM envelopes WHERE id = $1";
   try {
-    const fromEnvelope = await db.query(envelopeBudget, [fromId]);
+    const fromEnvelope = await db.query("SELECT budget FROM envelopes WHERE id = $1", [fromId]);
     if(fromEnvelope.rows[0].budget < amount) {  
       return res.status(404).send({
         message: "Insufficient amount in budget to transfer"
@@ -141,11 +133,82 @@ const transferBudget = async(req, res) => {
   }
 };
 
+// get all transactions for an envelope
+const getEnvelopeTransactions = async(req, res) => {
+  const {envelopeId} = req.params;
+  try {
+    const transactions = await db.query("SELECT * FROM transactions WHERE envelope_id = $1", [envelopeId]);
+    if(transactions.rowCount < 1) {
+      return res.status(404).send({
+        message: "Could not fetch transactions"
+      })
+    }
+    res.status(200).send({
+      status: "Success",
+      message: `Successfully found transactions relating to envelope id - ${envelopeId}`,
+      data: transactions.rows
+    })
+  } catch(err) {
+    return res.status(500).send({
+      error: err.message
+    })
+  }
+}
+
+// get transaction by id for an envelope
+const getEnvelopeTransactionById = async(req, res) => {
+  const {envelopeId, transactionId} = req.params;
+  try {
+    const transaction = await db.query("SELECT * FROM transactions WHERE id = $1 AND envelope_id = $2", [transactionId, envelopeId]);
+    if(transaction.rowCount < 1) {
+      return res.status(404).send({
+        message: "Could not find that transaction"
+      })
+    }
+    res.status(200).send({
+      status: "Success",
+      message: "Successfully found transaction",
+      data: transaction.rows[0]
+    })
+  } catch(err) {
+    return res.status(505).send({
+      error: err.message
+    })
+  }
+}
+
+// Create Transaction
+const createTransaction = async(req, res) => {
+  const {envelopeId} = req.params;
+  const {recipient, amount, date} = req.body;
+  try {
+    const envelopeQuery = await db.query("SELECT * FROM envelopes WHERE id = $1", [envelopeId])
+    if(envelopeQuery.rowCount < 0) {
+      return res.status(404).send({
+        message: "Cannot create transaction"
+      })
+    }
+    await db.query("INSERT INTO transactions (recipient, amount, date, envelope_id) VALUES ($1, $2, $3, $4) RETURNING *", [recipient, amount, date, envelopeId]);
+    await db.query("UPDATE envelopes SET budget = budget - $1 WHERE id = $2", [amount, envelopeId]);
+    res.status(201).send({
+      status: "Success",
+      message: "Successfully created transaction"
+    })
+  } catch(err) {
+    return res.status(500).send({
+      error: err.message
+    })
+  }
+};
+
 module.exports = {
   createEnvelope,
   getAllEnvelopes,
   getEnvelopeById,
   deleteEnvelope,
   updateEnvelope,
-  transferBudget
+  transferBudget,
+  getEnvelopeTransactions,
+  getEnvelopeTransactionById,
+  createTransaction
 };
