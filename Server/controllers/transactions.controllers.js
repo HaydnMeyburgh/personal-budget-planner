@@ -57,11 +57,10 @@ const updateTransaction = async(req, res) => {
     const currentAmount = transaction.rows[0].amount;
     const envelopeId = transaction.rows[0].envelope_id;
     await db.query("UPDATE envelopes SET budget = budget - ($1::numeric - $2::numeric) WHERE id = $3", [amount, currentAmount, envelopeId]);
-    const updatedTransaction = await db.query("UPDATE transactions SET recipient = $1, amount = $2, date = $3 WHERE id = $4 RETURNING *", [recipient, amount, date, transactionId]);
+    await db.query("UPDATE transactions SET recipient = $1, amount = $2, date = $3 WHERE id = $4", [recipient, amount, date, transactionId]);
     res.status(201).send({
       status: "Success",
-      message: `Successfully updated transaction with id - ${transactionId}`,
-      data: updatedTransaction.rows
+      message: `Successfully updated transaction with id - ${transactionId}`
     })
   } catch(err) {
     return res.status(500).send({
