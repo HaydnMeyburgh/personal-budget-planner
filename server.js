@@ -14,7 +14,7 @@ app.use('/api/envelopes', envelopeRouter);
 
 // Mounting the transactionsRouter
 const transactionsRouter = require('./Server/Routes/transactions');
-app.use('/api/envelopes', transactionsRouter);
+app.use('/api/transactions', transactionsRouter);
 
 const PORT = process.env.DEV_PORT || 3000
 app.listen(PORT, () => {
