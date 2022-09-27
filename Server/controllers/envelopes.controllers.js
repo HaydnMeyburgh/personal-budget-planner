@@ -24,11 +24,11 @@ const getAllEnvelopes = async (req, res) => {
 
 // Fetch specific envelope by Id
 const getEnvelopeById = async(req, res) => {
-  const envelopeId = parseInt(req.params.envelopeId);
+  const {envelopeId} = req.params;
   const query = "SELECT * FROM envelopes WHERE id =$1"
   try {
     const envelope = await db.query(query, [envelopeId]);
-    if(envelope.rows < 1) {
+    if(envelope.rowCount < 1) {
       return res.status(404).send({
         message: "Cannot find envelope"
       })
@@ -52,7 +52,7 @@ const createEnvelope = async(req, res, next) => {
   const query = "INSERT INTO envelopes (title, budget) VALUES($1, $2) RETURNING *"
   try {
     const newEnvelope = await db.query(query, [title, budget])
-    if(!newEnvelope) {
+    if(newEnvelope.rowCount < 1) {
       return res.status(404).send({
         message: "cannot create envelope"
       })
@@ -70,21 +70,19 @@ const createEnvelope = async(req, res, next) => {
 }
 
 // Delete envelope
-// **Need to figure out how to check if the envelope wasnt deleted in order to get a message to display** //
 const deleteEnvelope = async(req,  res) => {
-  const envelopeId = parseInt(req.params.envelopeId);
-  const query = "DELETE FROM envelopes WHERE id = $1"
+  const {envelopeId} = req.params;
+  const query = "DELETE FROM envelopes WHERE id = $1 RETURNING *"
   try {
     const deleteEnvelope = await db.query(query, [envelopeId]);
-    if(deleteEnvelope.rowCount = 0) {
+    if(deleteEnvelope.rowCount < 1) {
       return res.status(404).send({
         message: "Cannot find envelope to delete"
       })
     }
     res.status(200).send({
       status: "Success",
-      message: `Envelope with id: ${envelopeId} deleted`,
-      data: deleteEnvelope
+      message: `Envelope with id: ${envelopeId} deleted`
     })
   } catch(err) {
     return res.status(500).send({
@@ -95,11 +93,11 @@ const deleteEnvelope = async(req,  res) => {
 
 //Updating an envelope
 const updateEnvelope = async (req, res) => {
-  const envelopeId = parseInt(req.params.envelopeId);
+  const {envelopeId} = req.params;
   const { title, budget } = req.body;
-  const query = "UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3"
+  const query = "UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3 RETURNING *"
   try {
-    const updateEnvelope = db.query(query, [title, budget, envelopeId]);
+    const updateEnvelope = await db.query(query, [title, budget, envelopeId]);
     if(updateEnvelope.rows < 1) {
       return res.status(404).send({
         message: "Could not update envelope"
@@ -107,7 +105,8 @@ const updateEnvelope = async (req, res) => {
     }
     res.status(200).send({
       status: "Success",
-      message: `Successfully updated envelope with id: ${envelopeId}`
+      message: `Successfully updated envelope with id: ${envelopeId}`,
+      data: updateEnvelope.rows[0]
     })
   } catch(err) {
     return res.status(500).send({
@@ -118,25 +117,22 @@ const updateEnvelope = async (req, res) => {
 };
 
 // Transfer budget from one envelope to another
-/* This one is stumping me... Need to figure out how to write the query, or if the query should be 2 seperate ones....*/
 const transferBudget = async(req, res) => {
   const {fromId, toId} = req.params;
   const {amount} = req.body;
-  const queryFrom = "UPDATE envelopes SET budget = budget - $2 WHERE id = $1";
-  const queryTo = "UPDATE envelopes SET budget = budget + $2 WHERE id = $1";
+  const envelopeBudget = "SELECT budget FROM envelopes WHERE id = $1";
   try {
-    const fromBudget = await db.query(queryFrom, [fromId, amount]);
-    const toBudget = await db.query(queryTo, [toId, amount]);
-    // const budgetCheck = await db.query("SELECT budget FROM envelopes WHERE id = $1", [fromId])
-    //**  Need to find a check that will allow this to fail if the amount wanting to transfer is greater than the original budget amount
-    if(!fromBudget || !toBudget) {  
+    const fromEnvelope = await db.query(envelopeBudget, [fromId]);
+    if(fromEnvelope.rows[0].budget < amount) {  
       return res.status(404).send({
         message: "Insufficient amount in budget to transfer"
       })
     }
+    await db.query("UPDATE envelopes SET budget = budget - $2 WHERE id = $1", [fromId, amount]);
+    await db.query("UPDATE envelopes SET budget = budget + $2 WHERE id = $1", [toId, amount]);
     res.status(201).send({
       status: "Success",
-      message: `Successfully transferred budget from id: ${fromId} to id: ${toId}`
+      message: `Successfully transferred budget from ${fromId} to ${toId}`
     })
   } catch(err) {
     return res.status(500).send({
