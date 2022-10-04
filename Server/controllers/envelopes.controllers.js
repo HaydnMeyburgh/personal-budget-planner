@@ -69,12 +69,13 @@ const createEnvelope = async(req, res, next) => {
 const deleteEnvelope = async(req,  res) => {
   const {envelopeId} = req.params;
   try {
-    const deleteEnvelope = await db.query("DELETE FROM envelopes WHERE id = $1 RETURNING *", [envelopeId]);
-    if(deleteEnvelope.rowCount < 1) {
+    const envelope = await db.query("SELECT * FROM envelopes WHERE id = $1", [envelopeId]);
+    if(envelope.rowCount < 1) {
       return res.status(404).send({
         message: "Cannot find envelope to delete"
       })
     }
+    await db.query("DELETE FROM envelopes WHERE id = $1", [envelopeId])
     res.status(200).send({
       status: "Success",
       message: `Envelope with id: ${envelopeId} deleted`
@@ -94,7 +95,7 @@ const updateEnvelope = async (req, res) => {
     const updateEnvelope = await db.query("UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3 RETURNING *", [title, budget, envelopeId]);
     if(updateEnvelope.rows < 1) {
       return res.status(404).send({
-        message: "Could not update envelope"
+        message: "Could not find envelope"
       })
     }
     res.status(200).send({
@@ -122,9 +123,9 @@ const transferBudget = async(req, res) => {
     }
     await db.query("UPDATE envelopes SET budget = budget - $2 WHERE id = $1", [fromId, amount]);
     await db.query("UPDATE envelopes SET budget = budget + $2 WHERE id = $1", [toId, amount]);
-    res.status(201).send({
+    res.status(200).send({
       status: "Success",
-      message: `Successfully transferred budget from ${fromId} to ${toId}`
+      message: `Successfully transferred budget from envelope id ${fromId} to id ${toId}`
     })
   } catch(err) {
     return res.status(500).send({
