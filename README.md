@@ -8,7 +8,7 @@ The API is written in Javascript using:
 - Node
 - Express
 
-The database was built using:
+The database is built and queryed using:
 - Postgresql
 
 ---
@@ -17,7 +17,7 @@ The database was built using:
 - Run `npm install` to install packages.
 - Run `node server.js` to start the server.
 - use CURL or postman to see the API in action.
-- Refer to the [Documentation](#Documentation) to see the URIs and how to use the API.
+- Refer to the Documentation to see the URIs and how to use the API.
 
 ## Documentation
 
@@ -25,4 +25,4 @@ The API is documented through Swagger and can be viewed at [http://localhost:300
 
 ## Additional Notes
 
-This was really fun to build for my first proper go with backend development. There are still some things I need to work on, but to have this completed and working feels amazing. I think I can refactor some of the codebase just to make it less repetitive as well as removing the in app YAML in the routes files to its own file.  
+This was really fun to build for my first proper go with backend development. There are still some things I need to work on, but to have this completed and working feels amazing. I think I can refactor some of the codebase just to make it less repetitive and easier to read and follow a long.
