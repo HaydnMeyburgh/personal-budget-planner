@@ -1,12 +1,17 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
+const swaggerUI = require('swagger-ui-express');
 
 dotenv.config({ path: "./db/config/config.env"});
 
 // Parsing middleware that parses request bodies into JSON
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+
+// Swagger UI
+const specs = require('./swagger');
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 // Mounting the envelopeRouter
 const envelopeRouter = require('./Server/Routes/envelopes');
