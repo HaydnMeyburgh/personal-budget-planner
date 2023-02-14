@@ -3,7 +3,7 @@ const { db } = require("../../db/config/index");
 // Fetch all envelopes
 const getAllEnvelopes = async (req, res) => {
   try {
-    const envelopes = await db.query("SELECT (title, budget) FROM envelopes");
+    const envelopes = await db.query("SELECT title, budget FROM envelopes");
     if (envelopes.rows.length === 0) {
       return res.status(404).send({
         message: "Cannot find envelopes",
@@ -21,13 +21,14 @@ const getAllEnvelopes = async (req, res) => {
   }
 };
 
-// Fetch specific envelope by Id
+// Fetch specific envelope by Id and associated transactions
 const getEnvelopeById = async (req, res) => {
   const { envelopeId } = req.params;
   try {
-    const envelope = await db.query("SELECT (title, budget) FROM envelopes WHERE id =$1", [
-      envelopeId,
-    ]);
+    const envelope = await db.query(
+      "SELECT envelopes.title, envelopes.budget, transactions.recipient, transactions.amount FROM envelopes INNER JOIN transactions ON envelopes.id = transactions.envelope_id WHERE envelopes.id = $1",
+      [envelopeId]
+    );
     if (envelope.rows.length === 0) {
       return res.status(404).send({
         message: "Cannot find envelope",
@@ -36,7 +37,7 @@ const getEnvelopeById = async (req, res) => {
     res.status(200).send({
       status: "Success",
       message: "Inforamtion regarding envelope received",
-      data: envelope.rows[0],
+      data: envelope.rows,
     });
   } catch (err) {
     return res.status(500).send({
@@ -105,7 +106,8 @@ const updateEnvelope = async (req, res) => {
     );
     if (updateEnvelope.rows.length === 0) {
       return res.status(400).send({
-        message: "Envelope could not be updated, ensure correct data is submitted",
+        message:
+          "Envelope could not be updated, ensure correct data is submitted",
       });
     }
     res.status(200).send({
@@ -153,30 +155,30 @@ const transferBudget = async (req, res) => {
   }
 };
 
-// get all transactions for an envelope
-const getEnvelopeTransactions = async (req, res) => {
-  const { envelopeId } = req.params;
-  try {
-    const transactions = await db.query(
-      "SELECT * FROM transactions WHERE envelope_id = $1",
-      [envelopeId]
-    );
-    if (transactions.rows.length === 0) {
-      return res.status(404).send({
-        message: "Could not fetch transactions",
-      });
-    }
-    res.status(200).send({
-      status: "Success",
-      message: "Information regarding transaction received.",
-      data: transactions.rows,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      error: err.message,
-    });
-  }
-};
+// Transactions are fetched when a specific envelope is fetched SEEN ABOVE *I might come back and change this.
+// const getEnvelopeTransactions = async (req, res) => {
+//   const { envelopeId } = req.params;
+//   try {
+//     const transactions = await db.query(
+//       "SELECT * FROM transactions WHERE envelope_id = $1",
+//       [envelopeId]
+//     );
+//     if (transactions.rows.length === 0) {
+//       return res.status(404).send({
+//         message: "Could not fetch transactions",
+//       });
+//     }
+//     res.status(200).send({
+//       status: "Success",
+//       message: "Information regarding transaction received.",
+//       data: transactions.rows,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       error: err.message,
+//     });
+//   }
+// };
 
 // I dont think this is needed as of now, may need it once ive built the frontend
 // const getEnvelopeTransactionById = async (req, res) => {
@@ -243,7 +245,7 @@ module.exports = {
   deleteEnvelope,
   updateEnvelope,
   transferBudget,
-  getEnvelopeTransactions,
+  // getEnvelopeTransactions,
   // getEnvelopeTransactionById,
   createTransaction,
 };
