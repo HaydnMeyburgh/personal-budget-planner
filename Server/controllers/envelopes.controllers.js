@@ -1,204 +1,238 @@
-const { db } = require('../../db/config/index')
+const { db } = require("../../db/config/index");
 
 // Fetch all envelopes
 const getAllEnvelopes = async (req, res) => {
   try {
-    const envelopes = await db.query("SELECT * FROM envelopes");
-    if(envelopes.rowCount < 1) {
+    const envelopes = await db.query("SELECT (title, budget) FROM envelopes");
+    if (envelopes.rows.length === 0) {
       return res.status(404).send({
-        message: "Cannot find envelopes"
-      })
+        message: "Cannot find envelopes",
+      });
     }
     res.status(200).send({
       status: "Success",
       message: "Information regarding envelopes received",
-      data: envelopes.rows
-    })
-  } catch(err) {
-      return res.status(500).send({
-        error: err.message
-      })
+      data: envelopes.rows,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      error: err.message,
+    });
   }
 };
 
 // Fetch specific envelope by Id
-const getEnvelopeById = async(req, res) => {
-  const {envelopeId} = req.params;
+const getEnvelopeById = async (req, res) => {
+  const { envelopeId } = req.params;
   try {
-    const envelope = await db.query("SELECT * FROM envelopes WHERE id =$1", [envelopeId]);
-    if(envelope.rowCount < 1) {
+    const envelope = await db.query("SELECT (title, budget) FROM envelopes WHERE id =$1", [
+      envelopeId,
+    ]);
+    if (envelope.rows.length === 0) {
       return res.status(404).send({
-        message: "Cannot find envelope"
-      })
+        message: "Cannot find envelope",
+      });
     }
     res.status(200).send({
       status: "Success",
       message: "Inforamtion regarding envelope received",
-      data: envelope.rows[0]
-    })
-  } catch(err) {
+      data: envelope.rows[0],
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
 };
 
 // Create new envelope
 /* using SERIAL in the database to auto increment id's */
-const createEnvelope = async(req, res, next) => {
-  const {title, budget} = req.body;
+const createEnvelope = async (req, res, next) => {
+  const { title, budget } = req.body;
   try {
-    const newEnvelope = await db.query("INSERT INTO envelopes (title, budget) VALUES($1, $2) RETURNING *", [title, budget])
-    if(newEnvelope.rowCount < 1) {
-      return res.status(404).send({
-        message: "cannot create envelope"
-      })
+    const newEnvelope = await db.query(
+      "INSERT INTO envelopes (title, budget) VALUES($1, $2)",
+      [title, budget]
+    );
+    if (newEnvelope.rows.length === 0) {
+      return res.status(400).send({
+        message: "Cannot create envelope, ensure correct data is submitted.",
+      });
     }
     res.status(201).send({
       status: "Success",
-      message: "New envelope created successfully"
-    })
-  } catch(err) {
+      message: "New envelope created successfully",
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
-}
+};
 
 // Delete envelope
-const deleteEnvelope = async(req,  res) => {
-  const {envelopeId} = req.params;
+const deleteEnvelope = async (req, res) => {
+  const { envelopeId } = req.params;
   try {
-    const envelope = await db.query("SELECT * FROM envelopes WHERE id = $1", [envelopeId]);
-    if(envelope.rowCount < 1) {
+    const envelope = await db.query("SELECT * FROM envelopes WHERE id = $1", [
+      envelopeId,
+    ]);
+    if (envelope.rows === 0) {
       return res.status(404).send({
-        message: "Cannot find envelope to delete"
-      })
+        message: "Envelope does not exist",
+      });
     }
-    await db.query("DELETE FROM envelopes WHERE id = $1", [envelopeId])
+    await db.query("DELETE FROM envelopes WHERE id = $1", [envelopeId]);
     res.status(200).send({
       status: "Success",
-      message: `Envelope with id: ${envelopeId} deleted`
-    })
-  } catch(err) {
+      message: "Envelope deleted successfully",
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
 };
 
 //Updating an envelope
 const updateEnvelope = async (req, res) => {
-  const {envelopeId} = req.params;
+  const { envelopeId } = req.params;
   const { title, budget } = req.body;
   try {
-    const updateEnvelope = await db.query("UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3 RETURNING *", [title, budget, envelopeId]);
-    if(updateEnvelope.rows < 1) {
-      return res.status(404).send({
-        message: "Could not find envelope"
-      })
+    const updateEnvelope = await db.query(
+      "UPDATE envelopes SET title = $1, budget = $2 WHERE id = $3",
+      [title, budget, envelopeId]
+    );
+    if (updateEnvelope.rows.length === 0) {
+      return res.status(400).send({
+        message: "Envelope could not be updated, ensure correct data is submitted",
+      });
     }
     res.status(200).send({
       status: "Success",
-      message: `Successfully updated envelope with id: ${envelopeId}`
-    })
-  } catch(err) {
+      message: "Successfully updated envelope",
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message 
-    })
+      error: err.message,
+    });
   }
-
 };
 
+// I may have to come back and change this, to make it work on the frontend
 // Transfer budget from one envelope to another
-const transferBudget = async(req, res) => {
-  const {fromId, toId} = req.params;
-  const {amount} = req.body;
+const transferBudget = async (req, res) => {
+  const { fromId, toId } = req.params;
+  const { amount } = req.body;
   try {
-    const fromEnvelope = await db.query("SELECT budget FROM envelopes WHERE id = $1", [fromId]);
-    if(fromEnvelope.rows[0].budget < amount) {  
-      return res.status(404).send({
-        message: "Insufficient amount in budget to transfer"
-      })
+    const fromEnvelope = await db.query(
+      "SELECT budget FROM envelopes WHERE id = $1",
+      [fromId]
+    );
+    if (fromEnvelope.rows[0].budget < amount) {
+      return res.status(400).send({
+        message: "Insufficient amount in budget to transfer",
+      });
     }
-    await db.query("UPDATE envelopes SET budget = budget - $2 WHERE id = $1", [fromId, amount]);
-    await db.query("UPDATE envelopes SET budget = budget + $2 WHERE id = $1", [toId, amount]);
+    await db.query("UPDATE envelopes SET budget = budget - $2 WHERE id = $1", [
+      fromId,
+      amount,
+    ]);
+    await db.query("UPDATE envelopes SET budget = budget + $2 WHERE id = $1", [
+      toId,
+      amount,
+    ]);
     res.status(200).send({
       status: "Success",
-      message: `Successfully transferred budget from envelope id ${fromId} to id ${toId}`
-    })
-  } catch(err) {
+      message: "Successfully transferred budget",
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
 };
 
 // get all transactions for an envelope
-const getEnvelopeTransactions = async(req, res) => {
-  const {envelopeId} = req.params;
+const getEnvelopeTransactions = async (req, res) => {
+  const { envelopeId } = req.params;
   try {
-    const transactions = await db.query("SELECT * FROM transactions WHERE envelope_id = $1", [envelopeId]);
-    if(transactions.rowCount < 1) {
+    const transactions = await db.query(
+      "SELECT * FROM transactions WHERE envelope_id = $1",
+      [envelopeId]
+    );
+    if (transactions.rows.length === 0) {
       return res.status(404).send({
-        message: "Could not fetch transactions"
-      })
+        message: "Could not fetch transactions",
+      });
     }
     res.status(200).send({
       status: "Success",
-      message: `Successfully found transactions relating to envelope id - ${envelopeId}`,
-      data: transactions.rows
-    })
-  } catch(err) {
+      message: "Information regarding transaction received.",
+      data: transactions.rows,
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
-}
+};
 
-// get transaction by id for an envelope
-const getEnvelopeTransactionById = async(req, res) => {
-  const {envelopeId, transactionId} = req.params;
-  try {
-    const transaction = await db.query("SELECT * FROM transactions WHERE id = $1 AND envelope_id = $2", [transactionId, envelopeId]);
-    if(transaction.rowCount < 1) {
-      return res.status(404).send({
-        message: "Could not find that transaction"
-      })
-    }
-    res.status(200).send({
-      status: "Success",
-      message: "Successfully found transaction",
-      data: transaction.rows[0]
-    })
-  } catch(err) {
-    return res.status(505).send({
-      error: err.message
-    })
-  }
-}
+// I dont think this is needed as of now, may need it once ive built the frontend
+// const getEnvelopeTransactionById = async (req, res) => {
+//   const { envelopeId, transactionId } = req.params;
+//   try {
+//     const transaction = await db.query(
+//       "SELECT * FROM transactions WHERE id = $1 AND envelope_id = $2",
+//       [transactionId, envelopeId]
+//     );
+//     if (transaction.rowCount < 1) {
+//       return res.status(404).send({
+//         message: "Could not find that transaction",
+//       });
+//     }
+//     res.status(200).send({
+//       status: "Success",
+//       message: "Successfully found transaction",
+//       data: transaction.rows[0],
+//     });
+//   } catch (err) {
+//     return res.status(505).send({
+//       error: err.message,
+//     });
+//   }
+// };
 
 // Create Transaction
-const createTransaction = async(req, res) => {
-  const {envelopeId} = req.params;
-  const {recipient, amount, date} = req.body;
+const createTransaction = async (req, res) => {
+  const { envelopeId } = req.params;
+  const { recipient, amount, date } = req.body;
   try {
-    const envelopeQuery = await db.query("SELECT * FROM envelopes WHERE id = $1", [envelopeId])
-    if(envelopeQuery.rowCount < 0) {
+    const envelopeQuery = await db.query(
+      "SELECT * FROM envelopes WHERE id = $1",
+      [envelopeId]
+    );
+    if (envelopeQuery.rows.length === 0) {
       return res.status(404).send({
-        message: "Cannot create transaction"
-      })
+        message: "Cannot create transaction",
+      });
     }
-    await db.query("INSERT INTO transactions (recipient, amount, date, envelope_id) VALUES ($1, $2, $3, $4) RETURNING *", [recipient, amount, date, envelopeId]);
-    await db.query("UPDATE envelopes SET budget = budget - $1 WHERE id = $2", [amount, envelopeId]);
+    await db.query(
+      "INSERT INTO transactions (recipient, amount, date, envelope_id) VALUES ($1, $2, $3, $4) RETURNING *",
+      [recipient, amount, date, envelopeId]
+    );
+    await db.query("UPDATE envelopes SET budget = budget - $1 WHERE id = $2", [
+      amount,
+      envelopeId,
+    ]);
     res.status(201).send({
       status: "Success",
-      message: "Successfully created transaction"
-    })
-  } catch(err) {
+      message: "Successfully created transaction",
+    });
+  } catch (err) {
     return res.status(500).send({
-      error: err.message
-    })
+      error: err.message,
+    });
   }
 };
 
@@ -210,6 +244,6 @@ module.exports = {
   updateEnvelope,
   transferBudget,
   getEnvelopeTransactions,
-  getEnvelopeTransactionById,
-  createTransaction
+  // getEnvelopeTransactionById,
+  createTransaction,
 };
