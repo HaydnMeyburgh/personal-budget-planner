@@ -26,7 +26,7 @@ const getEnvelopeById = async (req, res) => {
   const { envelopeId } = req.params;
   try {
     const envelope = await db.query(
-      "SELECT envelopes.title, envelopes.budget, transactions.recipient, transactions.amount FROM envelopes INNER JOIN transactions ON envelopes.id = transactions.envelope_id WHERE envelopes.id = $1",
+      "SELECT envelopes.title, envelopes.budget, transactions.recipient, transactions.amount, transactions.date FROM envelopes INNER JOIN transactions ON envelopes.id = transactions.envelope_id WHERE envelopes.id = $1",
       [envelopeId]
     );
     if (envelope.rows.length === 0) {
