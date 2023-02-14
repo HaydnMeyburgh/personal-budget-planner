@@ -7,14 +7,14 @@ const {
   deleteEnvelope,
   updateEnvelope,
   transferBudget,
-  getEnvelopeTransactions,
-  getEnvelopeTransactionById,
+  // getEnvelopeTransactions,
+  // getEnvelopeTransactionById,
   createTransaction,
-} = require("../../controllers/envelopes.controllers");
+} = require("../controllers/envelopes.controllers");
 const {
   updateTransaction,
   deleteTransaction,
-} = require("../../controllers/transactions.controllers");
+} = require("../controllers/transactions.controllers");
 
 /**
  * @swagger
@@ -284,7 +284,8 @@ envelopeRouter.put("/transfer/:fromId/:toId", transferBudget);
  *      500:
  *        description: Server Error
  * */
-envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
+
+// envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
 
 /**
  * @swagger
@@ -317,10 +318,11 @@ envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
  *      500:
  *        description: Server Error
  * */
-envelopeRouter.get(
-  "/:envelopeId/transactions/:transactionId",
-  getEnvelopeTransactionById
-);
+
+// envelopeRouter.get(
+//   "/:envelopeId/transactions/:transactionId",
+//   getEnvelopeTransactionById
+// );
 
 /**
  * @swagger
