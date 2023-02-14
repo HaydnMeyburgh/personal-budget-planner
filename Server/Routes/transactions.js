@@ -1,14 +1,14 @@
-const express = require('express');
+const express = require("express");
 const transactionsRouter = express.Router();
 const {
   getAllTransactions,
   getTransactionById,
   updateTransaction,
   deleteTransaction,
-} = require('../controllers/transactions.controllers')
+} = require("../controllers/transactions.controllers");
 
 /**
- * @swagger 
+ * @swagger
  * components:
  *  schemas:
  *    transaction:
@@ -25,7 +25,7 @@ const {
  *        recipient:
  *          type: string
  *          description: The recipient name of the transaction
- *        date: 
+ *        date:
  *          type: date
  *          description: The date of the transaction
  *        envelope_id:
@@ -36,7 +36,7 @@ const {
  *        recipient: pick n pay
  *        amount: 100
  *        date: 2022-09-24
- *        envelop_id: 3      
+ *        envelop_id: 3
  * */
 
 /**
@@ -45,12 +45,12 @@ const {
  *  get:
  *    summary: Returns all transactions
  *    tags: [Transactions]
- *    responses: 
+ *    responses:
  *      200:
  *        description: All available transactions
  *        content:
  *          application/json:
- *            schema: 
+ *            schema:
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/transaction'
@@ -58,35 +58,35 @@ const {
  *        description: The transactions could not be found
  *      500:
  *        description: Server Error
- * */ 
-transactionsRouter.get('/', getAllTransactions);
+ * */
+transactionsRouter.get("/", getAllTransactions);
 
 /**
  * @swagger
  * /api/transactions/{transactionId}:
  *  get:
- *    summary: Returns transaction by id 
+ *    summary: Returns transaction by id
  *    tags: [Transactions]
  *    parameters:
  *      - in: path
  *        name: transactionId
- *        schema: 
+ *        schema:
  *          type: string
  *        required: true
  *        description: The transaction id
- *    responses: 
+ *    responses:
  *      200:
  *        description: Successfully found transaction by id
  *        content:
  *          application/json:
- *            schema: 
+ *            schema:
  *                $ref: '#/components/schemas/transaction'
  *      404:
  *        description: The transaction could not be found
  *      500:
  *        description: Server Error
  * */
-transactionsRouter.get('/:transactionId', getTransactionById);
+transactionsRouter.get("/:transactionId", getTransactionById);
 
 /**
  * @swagger
@@ -97,7 +97,7 @@ transactionsRouter.get('/:transactionId', getTransactionById);
  *    parameters:
  *      - in: path
  *        name: transactionId
- *        schema: 
+ *        schema:
  *          type: string
  *        required: true
  *        description: The transaction id
@@ -108,7 +108,7 @@ transactionsRouter.get('/:transactionId', getTransactionById);
  *          schema:
  *            type: object
  *            properties:
- *              recipient: 
+ *              recipient:
  *                type: string
  *              amount:
  *                type: integer
@@ -117,16 +117,16 @@ transactionsRouter.get('/:transactionId', getTransactionById);
  *            example:
  *              recipient: pick n pay
  *              amount: 100
- *              date: 2022-09-24 
- *    responses: 
+ *              date: 2022-09-24
+ *    responses:
  *      201:
  *        description: The transaction was updated successfully
  *      404:
  *        description: The transaction could not be updated
  *      500:
  *        description: Server Error
- * */ 
-transactionsRouter.put('/:transactionId', updateTransaction);
+ * */
+transactionsRouter.put("/:transactionId", updateTransaction);
 
 /**
  * @swagger
@@ -137,11 +137,11 @@ transactionsRouter.put('/:transactionId', updateTransaction);
  *    parameters:
  *      - in: path
  *        name: transactionId
- *        schema: 
+ *        schema:
  *          type: string
  *        required: true
  *        description: The transaction id
- *    responses: 
+ *    responses:
  *      200:
  *        description: Successfully deleted transaction
  *      404:
@@ -149,6 +149,6 @@ transactionsRouter.put('/:transactionId', updateTransaction);
  *      500:
  *        description: Server Error
  * */
-transactionsRouter.delete('/:transactionId', deleteTransaction);
+transactionsRouter.delete("/:transactionId", deleteTransaction);
 
 module.exports = transactionsRouter;

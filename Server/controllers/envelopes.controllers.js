@@ -6,7 +6,7 @@ const getAllEnvelopes = async (req, res) => {
     const envelopes = await db.query("SELECT * FROM envelopes");
     if(envelopes.rowCount < 1) {
       return res.status(404).send({
-        message: "Cannot find records"
+        message: "Cannot find envelopes"
       })
     }
     res.status(200).send({
