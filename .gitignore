@@ -1,5 +1,0 @@
-# dotenv environment variables file
-db/config/config.env
-
-#packages to ignore
-node_modules/
