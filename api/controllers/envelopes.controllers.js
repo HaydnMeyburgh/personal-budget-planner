@@ -25,10 +25,9 @@ const getAllEnvelopes = async (req, res) => {
 const getEnvelopeById = async (req, res) => {
   const { envelopeId } = req.params;
   try {
-    const envelope = await db.query(
-      "SELECT envelopes.title, envelopes.budget, transactions.recipient, transactions.amount, transactions.date FROM envelopes INNER JOIN transactions ON envelopes.id = transactions.envelope_id WHERE envelopes.id = $1",
-      [envelopeId]
-    );
+    const envelope = await db.query("SELECT * FROM envelopes WHERE id = $1", [
+      envelopeId,
+    ]);
     if (envelope.rows.length === 0) {
       return res.status(404).send({
         message: "Cannot find envelope",
