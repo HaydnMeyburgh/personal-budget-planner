@@ -1,5 +1,5 @@
 # dotenv environment variables file
-root/backend/config/config.env
+/api/config/config.env
 
 #packages to ignore
 node_modules/
