@@ -7,12 +7,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "index_bundle.js",
+    publicPath: "/",
   },
   target: "web",
   devServer: {
+    historyApiFallback: true,
     port: "5000",
     static: {
-      directory: path.join(__dirname, "public")
+      directory: path.join(__dirname, "public"),
     },
     open: true,
     hot: true,
@@ -32,7 +34,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "public", "index.html")
-    })
-  ]
+      template: path.join(__dirname, "public", "index.html"),
+    }),
+  ],
 };
