@@ -9,6 +9,10 @@ dotenv.config({ path: "./config/config.env" });
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+//CORS middleware
+const cors = require("cors");
+app.use(cors());
+
 // Swagger UI
 const specs = require("./doc/swagger");
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
