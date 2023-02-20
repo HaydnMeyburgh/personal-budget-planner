@@ -1,17 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const navbar = () => {
+const NavBar = () => {
   return (
     <div>
-      <li>
-        <Link to="/">Envelopes</Link>
-      </li>
-      <li>
-        <Link to="/transactions">Transactions</Link>
-      </li>
+      <nav>
+        <div className="nav-items">
+          <div className="logo">
+            <a href="/">
+              <h1>Budget Planner</h1>
+            </a>
+          </div>
+          <div className="docs">
+            <p>
+              View the API{" "}
+              <a href="http://localhost:3000/api/docs" target="_blank">
+                Documentation
+              </a>
+            </p>
+          </div>
+          <ul>
+            <li>
+              <NavLink to="/">Envelopes</NavLink>
+            </li>
+            <li>
+              <NavLink to="/transactions">Transactions</NavLink>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
   );
 };
 
-export default navbar;
+export default NavBar;
