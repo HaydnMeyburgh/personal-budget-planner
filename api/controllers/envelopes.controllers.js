@@ -3,7 +3,7 @@ const { db } = require("../config/index");
 // Fetch all envelopes
 const getAllEnvelopes = async (req, res) => {
   try {
-    const envelopes = await db.query("SELECT title, budget FROM envelopes");
+    const envelopes = await db.query("SELECT * FROM envelopes");
     if (envelopes.rows.length === 0) {
       return res.status(404).send({
         message: "Cannot find envelopes",
