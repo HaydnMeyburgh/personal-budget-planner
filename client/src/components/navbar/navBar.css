@@ -1,0 +1,43 @@
+nav {
+  margin: 0px, 50px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-contents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo > a{
+  text-decoration: none;
+  font-size: 50px;
+  font-family: 'Brush Script MT';
+  color: #6495ed;
+}
+
+.docs {
+  padding: 20px;
+  align-self: flex-end;
+  font-size: 12px;
+  color:black;
+}
+
+.nav-container ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+li {
+  padding: 20px 100px;
+  list-style-type: none;
+}
+
+.link {
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+}
