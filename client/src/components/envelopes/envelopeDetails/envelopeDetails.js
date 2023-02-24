@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Transactions from "../../transactions/transactions";
 
 const EnvelopeDetails = () => {
   const [envelopeDetails, setEnvelopeDetails] = useState([]);
+  const [envelopeTransactions, setEnvelopeTransactions] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
   useEffect(() => {
@@ -12,7 +14,17 @@ const EnvelopeDetails = () => {
       const envelopeDetailsData = await response.json();
       setEnvelopeDetails(envelopeDetailsData.data);
     };
+    const fetchTransactions = async () => {
+      const response = await fetch(
+        `http://localhost:3000/api/envelopes/${id}/transactions`
+      );
+      if (response.ok) {
+        const envelopeTransactions = await response.json();
+        setEnvelopeTransactions(envelopeTransactions.data);
+      }
+    };
     fetchEnvelopeDetails();
+    fetchTransactions();
   }, [id]);
 
   return (
@@ -23,13 +35,23 @@ const EnvelopeDetails = () => {
       <div className="envelope-details-container">
         {envelopeDetails.map((envelopeDetail) => (
           <div key={envelopeDetail.id}>
-            <div className="envelope-text">
-              <h3 className="envelope-title">{envelopeDetail.title}</h3>
+            <div className="envelope-details-text">
+              <h3 className="envelope-details-title">{envelopeDetail.title}</h3>
               <span>{envelopeDetail.budget}</span>
             </div>
           </div>
         ))}
-        {/* Need to add in the transactions here related to the envelope */}
+      </div>
+      <div className="envelope-transactions-container">
+        {envelopeTransactions.map((transactions) => (
+          <div key={transactions.id}>
+            <div className="transactions-details-text">
+              <span>Recipient: {transactions.recipient}</span>
+              <span>Amount: {transactions.amount}</span>
+              <span>Date: {transactions.date}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
