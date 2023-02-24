@@ -25,9 +25,10 @@ const getAllEnvelopes = async (req, res) => {
 const getEnvelopeById = async (req, res) => {
   const { envelopeId } = req.params;
   try {
-    const envelope = await db.query("SELECT * FROM envelopes WHERE id = $1", [
-      envelopeId,
-    ]);
+    const envelope = await db.query(
+      "SELECT * FROM envelopes WHERE id = $1",
+      [envelopeId]
+    );
     if (envelope.rows.length === 0) {
       return res.status(404).send({
         message: "Cannot find envelope",
@@ -155,29 +156,30 @@ const transferBudget = async (req, res) => {
 };
 
 // Transactions are fetched when a specific envelope is fetched SEEN ABOVE *I might come back and change this.
-// const getEnvelopeTransactions = async (req, res) => {
-//   const { envelopeId } = req.params;
-//   try {
-//     const transactions = await db.query(
-//       "SELECT * FROM transactions WHERE envelope_id = $1",
-//       [envelopeId]
-//     );
-//     if (transactions.rows.length === 0) {
-//       return res.status(404).send({
-//         message: "Could not fetch transactions",
-//       });
-//     }
-//     res.status(200).send({
-//       status: "Success",
-//       message: "Information regarding transaction received.",
-//       data: transactions.rows,
-//     });
-//   } catch (err) {
-//     return res.status(500).send({
-//       error: err.message,
-//     });
-//   }
-// };
+const getEnvelopeTransactions = async (req, res) => {
+  const { envelopeId } = req.params;
+  try {
+    const transactions = await db.query(
+      "SELECT * FROM transactions WHERE envelope_id = $1",
+      [envelopeId]
+    );
+    if (transactions.rows.length === 0) {
+      return res.status(404).send({
+        status: 404,
+        message: "No Transactions available for this envelope",
+      });
+    }
+    res.status(200).send({
+      status: "Success",
+      message: "Information regarding transaction received.",
+      data: transactions.rows,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      error: err.message,
+    });
+  }
+};
 
 // I dont think this is needed as of now, may need it once ive built the frontend
 // const getEnvelopeTransactionById = async (req, res) => {
@@ -244,7 +246,7 @@ module.exports = {
   deleteEnvelope,
   updateEnvelope,
   transferBudget,
-  // getEnvelopeTransactions,
+  getEnvelopeTransactions,
   // getEnvelopeTransactionById,
   createTransaction,
 };
