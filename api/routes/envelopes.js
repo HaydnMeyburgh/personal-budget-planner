@@ -7,7 +7,7 @@ const {
   deleteEnvelope,
   updateEnvelope,
   transferBudget,
-  // getEnvelopeTransactions,
+  getEnvelopeTransactions,
   // getEnvelopeTransactionById,
   createTransaction,
 } = require("../controllers/envelopes.controllers");
@@ -285,7 +285,7 @@ envelopeRouter.put("/transfer/:fromId/:toId", transferBudget);
  *        description: Server Error
  * */
 
-// envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
+envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
 
 /**
  * @swagger
