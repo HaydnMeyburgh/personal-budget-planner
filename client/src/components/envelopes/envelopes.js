@@ -17,15 +17,15 @@ const Envelopes = () => {
     <div className="container">
       <div className="envelopes-container">
         {envelopes.map((envelope) => (
-          <Link to={`/envelopes/${envelope.id}`}>
-            <div key={envelope.id} className="envelope-card">
+          <div key={envelope.id} className="envelope-card">
+            <Link to={`/envelopes/${envelope.id}`}>
               <div className="envelope-text">
                 <h3 className="envelope-title">{envelope.title}</h3>
                 <hr></hr>
                 <span>Budget: {envelope.budget}</span>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         ))}
       </div>
     </div>
