@@ -25,10 +25,9 @@ const getAllEnvelopes = async (req, res) => {
 const getEnvelopeById = async (req, res) => {
   const { envelopeId } = req.params;
   try {
-    const envelope = await db.query(
-      "SELECT * FROM envelopes WHERE id = $1",
-      [envelopeId]
-    );
+    const envelope = await db.query("SELECT * FROM envelopes WHERE id = $1", [
+      envelopeId,
+    ]);
     if (envelope.rows.length === 0) {
       return res.status(404).send({
         message: "Cannot find envelope",
@@ -160,7 +159,7 @@ const getEnvelopeTransactions = async (req, res) => {
   const { envelopeId } = req.params;
   try {
     const transactions = await db.query(
-      "SELECT * FROM transactions WHERE envelope_id = $1",
+      "SELECT id, recipient, amount, TO_CHAR(date, 'Mon dd, yyyy') AS date FROM transactions WHERE envelope_id = $1",
       [envelopeId]
     );
     if (transactions.rows.length === 0) {
