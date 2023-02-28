@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Transactions from "../../transactions/transactions";
+// import Transactions from "../../transactions/transactions";
 
 const EnvelopeDetails = () => {
   const [envelopeDetails, setEnvelopeDetails] = useState([]);
@@ -25,7 +25,7 @@ const EnvelopeDetails = () => {
     };
     fetchEnvelopeDetails();
     fetchTransactions();
-  }, [id]);
+  }, []);
 
   return (
     <div className="container">
@@ -42,6 +42,21 @@ const EnvelopeDetails = () => {
           </div>
         ))}
       </div>
+      <button
+        onClick={(e) => {
+          fetch(`http://localhost:3000/api/envelopes/${id}`, {
+            method: "DELETE",
+          }).then((response) => {
+            if(!response.ok) {
+              throw new Error("Something went wrong")
+            }
+            navigate("/");
+          }).catch(() => {console.log(e)});
+        }}
+      >
+        Delete
+      </button>
+      <h2>Transactions</h2>
       <div className="envelope-transactions-container">
         {envelopeTransactions.map((transactions) => (
           <div key={transactions.id}>
