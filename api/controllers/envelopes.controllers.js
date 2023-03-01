@@ -54,9 +54,10 @@ const createEnvelope = async (req, res, next) => {
       "INSERT INTO envelopes (title, budget) VALUES($1, $2)",
       [title, budget]
     );
-    if (newEnvelope.rows.length === 0) {
+    if (newEnvelope.rowCount < 1) {
       return res.status(400).send({
         message: "Cannot create envelope, ensure correct data is submitted.",
+        data: newEnvelope
       });
     }
     res.status(201).send({
