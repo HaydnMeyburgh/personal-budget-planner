@@ -11,6 +11,9 @@ const Transactions = lazy(() =>
 const EnvelopeDetails = lazy(() =>
   import("./components/envelopes/envelopeDetails/envelopeDetails")
 );
+const AddEnvelope = lazy(() =>
+  import("./components/envelopes/addEnvelope/addEnvelope")
+);
 
 const App = () => {
   return (
@@ -19,6 +22,7 @@ const App = () => {
       <Suspense fallback={<div className="container">Loading...</div>}>
         <Routes>
           <Route path="/" element={<Envelopes />} />
+          <Route path="/addEnvelope" element={<AddEnvelope />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/envelopes/:id" element={<EnvelopeDetails />} />
         </Routes>
