@@ -13,22 +13,28 @@ const Envelopes = () => {
     };
     fetchEnvelopes();
   }, []);
+  
   return (
-    <div className="container">
-      <div className="envelopes-container">
-        {envelopes.map((envelope) => (
-          <div key={envelope.id} className="envelope-card">
-            <Link to={`/envelopes/${envelope.id}`}>
-              <div className="envelope-text">
-                <h3 className="envelope-title">{envelope.title}</h3>
-                <hr></hr>
-                <span>Budget: {envelope.budget}</span>
-              </div>
-            </Link>
-          </div>
-        ))}
+    <>
+      <Link to={"/addEnvelope"}>
+        <button>Add New Envelope</button>
+      </Link>
+      <div className="container">
+        <div className="envelopes-container">
+          {envelopes.map((envelope) => (
+            <div key={envelope.id} className="envelope-card">
+              <Link to={`/envelopes/${envelope.id}`}>
+                <div className="envelope-text">
+                  <h3 className="envelope-title">{envelope.title}</h3>
+                  <hr></hr>
+                  <span>Budget: {envelope.budget}</span>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
