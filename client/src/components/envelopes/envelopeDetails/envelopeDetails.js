@@ -15,12 +15,16 @@ const EnvelopeDetails = () => {
       setEnvelopeDetails(envelopeDetailsData.data);
     };
     const fetchTransactions = async () => {
-      const response = await fetch(
-        `http://localhost:3000/api/envelopes/${id}/transactions`
-      );
-      if (response.ok) {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/envelopes/${id}/transactions/`
+        );
         const envelopeTransactions = await response.json();
-        setEnvelopeTransactions(envelopeTransactions.data);
+        if (response.status === 200) {
+          setEnvelopeTransactions(envelopeTransactions.data);
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
     fetchEnvelopeDetails();
@@ -46,12 +50,16 @@ const EnvelopeDetails = () => {
         onClick={(e) => {
           fetch(`http://localhost:3000/api/envelopes/${id}`, {
             method: "DELETE",
-          }).then((response) => {
-            if(!response.ok) {
-              throw new Error("Something went wrong")
-            }
-            navigate("/");
-          }).catch(() => {console.log(e)});
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Something went wrong");
+              }
+              navigate("/");
+            })
+            .catch(() => {
+              console.log(e);
+            });
         }}
       >
         Delete
