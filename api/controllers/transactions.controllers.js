@@ -4,7 +4,7 @@ const { db } = require("../config/index");
 const getAllTransactions = async (req, res) => {
   try {
     const transactions = await db.query(
-      "SELECT recipient, amount, date FROM transactions"
+      "SELECT id, recipient, amount, TO_CHAR(date, 'Mon dd, yyyy') AS date FROM transactions"
     );
     if (transactions.rows === 0) {
       return res.status(404).send({
@@ -28,7 +28,7 @@ const getTransactionById = async (req, res) => {
   const { transactionId } = req.params;
   try {
     const transaction = await db.query(
-      "SELECT recipient, amount, date FROM transactions WHERE id = $1",
+      "SELECT id, recipient, amount, TO_CHAR(date, 'Mon dd, yyyy') AS date FROM transactions WHERE id = $1",
       [transactionId]
     );
     if (transaction.rows === 0) {
