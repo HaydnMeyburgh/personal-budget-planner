@@ -1,5 +1,8 @@
 # Personal Budget Planner API
 
+I am currently in the process of building a frontend for this to see how the API would be consumed and try to get an understanding from a users perspective while at the same time using React.
+
+
 This REST API allows you to create budget envelopes with a title and amount. You can also create transactions that are associated to an envelope where the transaction amount will be removed from the budget to keep budget totals updated. All of this is stored and managed on a database.
 
 ---
