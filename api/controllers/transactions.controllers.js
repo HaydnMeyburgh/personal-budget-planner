@@ -31,7 +31,7 @@ const getTransactionById = async (req, res) => {
       "SELECT id, recipient, amount, TO_CHAR(date, 'Mon dd, yyyy') AS date FROM transactions WHERE id = $1",
       [transactionId]
     );
-    if (transaction.rows === 0) {
+    if (transaction.rows.length === 0) {
       return res.status(404).send({
         message: "Transaction could not be found",
       });
