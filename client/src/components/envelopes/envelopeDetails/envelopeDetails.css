@@ -1,0 +1,95 @@
+.btn {
+  text-align: start;
+  border-radius: 4px;
+  border: none;
+  color: #6495ed;
+  padding: 8px;
+  background-color: white;
+  font-size: 15px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.envelope-details-container {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  height: 250px;
+  width: 350px;
+  transition: box-shadow .3s;
+  border: 0.5px solid #6494ed65;
+}
+
+.envelope-details-title, .envelope-details-budget {
+  display: flex;
+  margin: 25px;
+  width: 250px;
+  height: 40px;
+  font-size: 20px;
+  padding-left: 15px;
+  border-radius: 4px;
+  border: 0.5px solid #6494ed65;
+}
+
+.changed-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.cancel-button, .save-button {
+  margin: 10px;
+  width: 80px;
+  height: 30px;
+  border-radius: 4px;
+  border: 0.5px solid #6494ed65;
+  color: #6495ed;
+  cursor: pointer;
+}
+
+.delete-button {
+  margin-top: 30px;
+  width: 80px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+.transactions-title {
+  margin-top: 30px;
+  color: #6495ed;
+  text-decoration: underline;
+}
+
+.envelope-transactions-container {
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 100px;
+  border-radius: 4px;
+  padding: 20px;
+  height: auto;
+}
+
+.transactions-details-text {
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+  align-content: space-around;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  height: 200px;
+  width: 250px;
+  transition: box-shadow .3s;
+  border: 0.5px solid #6494ed65;
+}
