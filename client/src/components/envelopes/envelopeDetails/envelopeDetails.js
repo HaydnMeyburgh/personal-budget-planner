@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import "./envelopeDetails.css";
 
 const EnvelopeDetails = () => {
   const [envelopeDetails, setEnvelopeDetails] = useState([]);
@@ -46,78 +47,80 @@ const EnvelopeDetails = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <button className="btn" onClick={() => navigate(-1)}>
         Go Back
       </button>
-      <div className="envelope-details-container">
-        <div key={tempEnvelope.id}>
-          <div className="envelope-details-text">
-            <input
-              className="envelope-details-title"
-              type="text"
-              value={tempEnvelope.title}
-              onChange={(e) => {
-                setChanged(true);
-                setTempEnvelope({ ...tempEnvelope, title: e.target.value });
-              }}
-            />
-            <input
-              className="envelope-details-budget"
-              type="text"
-              value={tempEnvelope.budget}
-              onChange={(e) => {
-                setChanged(true);
-                setTempEnvelope({ ...tempEnvelope, budget: e.target.value });
-              }}
-            />
+      <div className="details-container">
+        <div className="envelope-details-container">
+          <div key={tempEnvelope.id}>
+              <input
+                className="envelope-details-title"
+                type="text"
+                value={tempEnvelope.title}
+                onChange={(e) => {
+                  setChanged(true);
+                  setTempEnvelope({ ...tempEnvelope, title: e.target.value });
+                }}
+              />
+              <input
+                className="envelope-details-budget"
+                type="text"
+                value={tempEnvelope.budget}
+                onChange={(e) => {
+                  setChanged(true);
+                  setTempEnvelope({ ...tempEnvelope, budget: e.target.value });
+                }}
+              />
           </div>
-        </div>
-        {changed ? (
-          <>
-            <button
-              onClick={(e) => {
-                setTempEnvelope({ ...envelopeDetails });
-                setChanged(false);
-              }}
-            >
-              Cancel
-            </button>{" "}
-            <button onClick={updateEnvelope}>Save</button>
-          </>
-        ) : null}
-      </div>
-      <button
-        onClick={(e) => {
-          fetch(`http://localhost:3000/api/envelopes/${id}`, {
-            method: "DELETE",
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Something went wrong");
-              }
-              navigate("/");
-            })
-            .catch(() => {
-              console.log(e);
-            });
-        }}
-      >
-        Delete
-      </button>
-      <h2>Transactions</h2>
-      <div className="envelope-transactions-container">
-        {envelopeTransactions.map((transactions) => (
-          <div key={transactions.id}>
-            <div className="transactions-details-text">
-              <span>Recipient: {transactions.recipient}</span>
-              <span>Amount: {transactions.amount}</span>
-              <span>Date: {transactions.date}</span>
+          {changed ? (
+            <div className="changed-buttons"> 
+              <button
+              className="cancel-button"
+                onClick={(e) => {
+                  setTempEnvelope({ ...envelopeDetails });
+                  setChanged(false);
+                }}
+              >
+                Cancel
+              </button>{" "}
+              <button className="save-button" onClick={updateEnvelope}>Save</button>
             </div>
-          </div>
-        ))}
+          ) : null}
+        </div>
+        <button
+        className="delete-button"
+          onClick={(e) => {
+            fetch(`http://localhost:3000/api/envelopes/${id}`, {
+              method: "DELETE",
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Something went wrong");
+                }
+                navigate("/");
+              })
+              .catch(() => {
+                console.log(e);
+              });
+          }}
+        >
+          Delete
+        </button>
+        <h2 className="transactions-title">Envelope Transactions</h2>
+        <div className="envelope-transactions-container">
+          {envelopeTransactions.map((transactions) => (
+            <div key={transactions.id}>
+              <div className="transactions-details-text">
+                <span>Recipient: {transactions.recipient}</span>
+                <span>Amount: {transactions.amount}</span>
+                <span>Date: {transactions.date}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
