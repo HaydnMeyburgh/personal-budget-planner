@@ -11,6 +11,9 @@ const Transactions = lazy(() =>
 const EnvelopeDetails = lazy(() =>
   import("./components/envelopes/envelopeDetails/envelopeDetails")
 );
+const TransactionDetails = lazy(() =>
+  import("./components/transactions/transactionDetails/transactionDetails")
+);
 const AddEnvelope = lazy(() =>
   import("./components/envelopes/addEnvelope/addEnvelope")
 );
@@ -25,6 +28,7 @@ const App = () => {
           <Route path="/addEnvelope" element={<AddEnvelope />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/envelopes/:id" element={<EnvelopeDetails />} />
+          <Route path="/transactions/:id" element={<TransactionDetails />} />
         </Routes>
       </Suspense>
     </div>
