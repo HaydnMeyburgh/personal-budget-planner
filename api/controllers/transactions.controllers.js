@@ -50,12 +50,11 @@ const getTransactionById = async (req, res) => {
 
 // Create Transaction
 const createTransaction = async (req, res) => {
-  const { envelopeId } = req.params;
-  const { recipient, amount, date } = req.body;
+  const { recipient, amount, date, envelope_id } = req.body;
   try {
     const envelopeQuery = await db.query(
       "SELECT * FROM envelopes WHERE id = $1",
-      [envelopeId]
+      [envelope_id]
     );
     if (envelopeQuery.rows.length === 0) {
       return res.status(404).send({
@@ -64,11 +63,11 @@ const createTransaction = async (req, res) => {
     }
     await db.query(
       "INSERT INTO transactions (recipient, amount, date, envelope_id) VALUES ($1, $2, $3, $4) RETURNING *",
-      [recipient, amount, date, envelopeId]
+      [recipient, amount, date, envelope_id]
     );
     await db.query("UPDATE envelopes SET budget = budget - $1 WHERE id = $2", [
       amount,
-      envelopeId,
+      envelope_id,
     ]);
     res.status(201).send({
       status: "Success",
@@ -122,7 +121,7 @@ const deleteTransaction = async (req, res) => {
   const { transactionId } = req.params;
   try {
     const transaction = await db.query(
-      "SELECT amount, envelopeId FROM transactions WHERE id = $1",
+      "SELECT amount, envelope_id FROM transactions WHERE id = $1",
       [transactionId]
     );
     const transactionAmount = transaction.rows[0].amount;
