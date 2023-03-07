@@ -17,6 +17,9 @@ const TransactionDetails = lazy(() =>
 const AddEnvelope = lazy(() =>
   import("./components/envelopes/addEnvelope/addEnvelope")
 );
+const AddTransaction = lazy(() =>
+  import("./components/transactions/addTransaction/addTransaction")
+);
 
 const App = () => {
   return (
@@ -26,6 +29,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Envelopes />} />
           <Route path="/addEnvelope" element={<AddEnvelope />} />
+          <Route path="/addTransaction" element={<AddTransaction />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/envelopes/:id" element={<EnvelopeDetails />} />
           <Route path="/transactions/:id" element={<TransactionDetails />} />
