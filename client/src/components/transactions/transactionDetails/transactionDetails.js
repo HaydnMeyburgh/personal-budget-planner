@@ -60,7 +60,7 @@ const TransactionDetails = () => {
               />
               <input
                 className="Transaction-details-date"
-                type="text"
+                type="date"
                 value={tempTransaction.date}
                 onChange={(e) => {
                   setChanged(true);
