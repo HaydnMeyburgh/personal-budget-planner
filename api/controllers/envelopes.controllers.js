@@ -206,38 +206,7 @@ const getEnvelopeTransactions = async (req, res) => {
 //   }
 // };
 
-// Create Transaction
-const createTransaction = async (req, res) => {
-  const { envelopeId } = req.params;
-  const { recipient, amount, date } = req.body;
-  try {
-    const envelopeQuery = await db.query(
-      "SELECT * FROM envelopes WHERE id = $1",
-      [envelopeId]
-    );
-    if (envelopeQuery.rows.length === 0) {
-      return res.status(404).send({
-        message: "Cannot create transaction",
-      });
-    }
-    await db.query(
-      "INSERT INTO transactions (recipient, amount, date, envelope_id) VALUES ($1, $2, $3, $4) RETURNING *",
-      [recipient, amount, date, envelopeId]
-    );
-    await db.query("UPDATE envelopes SET budget = budget - $1 WHERE id = $2", [
-      amount,
-      envelopeId,
-    ]);
-    res.status(201).send({
-      status: "Success",
-      message: "Successfully created transaction",
-    });
-  } catch (err) {
-    return res.status(500).send({
-      error: err.message,
-    });
-  }
-};
+
 
 module.exports = {
   createEnvelope,
@@ -248,5 +217,5 @@ module.exports = {
   transferBudget,
   getEnvelopeTransactions,
   // getEnvelopeTransactionById,
-  createTransaction,
+  
 };
