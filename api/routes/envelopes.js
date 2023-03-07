@@ -326,46 +326,6 @@ envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
 
 /**
  * @swagger
- * /api/envelopes/{id}/transactions:
- *  post:
- *    summary: Create a new transaction associated to an envelope and adjusts the envelopes budget according to transaction amount
- *    tags: [Envelope Transactions]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The envelope id
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              recipient:
- *                type: string
- *              amount:
- *                type: integer
- *              date:
- *                type: date
- *            example:
- *              recipient: pick n pay
- *              amount: 100
- *              date: 2022-09-24
- *    responses:
- *      201:
- *        description: The transaction was created successfully
- *      404:
- *        description: The transaction could not be created
- *      500:
- *        description: Server Error
- * */
-envelopeRouter.post("/:envelopeId/transactions", createTransaction);
-
-/**
- * @swagger
  * /api/envelopes/{id}/transactions/{transactionId}:
  *  put:
  *    summary: Update a transaction associated to an envelope. If the transaction amount is adjusted, the envelopes budget will be adjusted accordingly

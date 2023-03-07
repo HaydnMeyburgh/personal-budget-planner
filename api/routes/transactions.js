@@ -5,6 +5,7 @@ const {
   getTransactionById,
   updateTransaction,
   deleteTransaction,
+  createTransaction,
 } = require("../controllers/transactions.controllers");
 
 /**
@@ -87,6 +88,46 @@ transactionsRouter.get("/", getAllTransactions);
  *        description: Server Error
  * */
 transactionsRouter.get("/:transactionId", getTransactionById);
+
+/**
+ * @swagger
+ * /api/envelopes/{id}/transactions:
+ *  post:
+ *    summary: Create a new transaction associated to an envelope and adjusts the envelopes budget according to transaction amount
+ *    tags: [Envelope Transactions]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: The envelope id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              recipient:
+ *                type: string
+ *              amount:
+ *                type: integer
+ *              date:
+ *                type: date
+ *            example:
+ *              recipient: pick n pay
+ *              amount: 100
+ *              date: 2022-09-24
+ *    responses:
+ *      201:
+ *        description: The transaction was created successfully
+ *      404:
+ *        description: The transaction could not be created
+ *      500:
+ *        description: Server Error
+ * */
+transactionsRouter.post("/", createTransaction);
 
 /**
  * @swagger
