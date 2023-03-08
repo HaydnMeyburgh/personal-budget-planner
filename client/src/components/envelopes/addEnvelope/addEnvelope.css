@@ -1,0 +1,47 @@
+.btn {
+  text-align: start;
+  border-radius: 4px;
+  border: none;
+  color: #6495ed;
+  padding: 8px;
+  background-color: white;
+  font-size: 15px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+.new-envelope-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.new-envelope {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  height: 250px;
+  width: 350px;
+  transition: box-shadow .3s;
+  border: 0.5px solid #6494ed65;
+}
+
+.new-envelope-title, .new-envelope-budget {
+  display: flex;
+  margin: 25px;
+  width: 250px;
+  height: 40px;
+  font-size: 20px;
+  padding-left: 15px;
+  border-radius: 4px;
+  border: 0.5px solid #6494ed65;
+}
+
+.submit-new-envelope {
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+}
