@@ -38,32 +38,37 @@ const AddTransaction = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <button className="btn" onClick={() => navigate(-1)}>
         Go Back
       </button>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={recipient}
-          placeholder="Recipient"
-          onChange={(e) => setRecipient(e.target.value)}
-        />
-        <input
-          type="text"
-          value={amount}
-          placeholder="Amount"
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <Dropdown onChange={(value) => setEnvelopeId(value)} />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+      <div className="new-transaction-container">
+        <form onSubmit={handleSubmit} className="new-transaction">
+          <input
+            type="text"
+            value={recipient}
+            placeholder="Recipient"
+            onChange={(e) => setRecipient(e.target.value)}
+            className="new-transaction-recipient"
+          />
+          <input
+            type="text"
+            value={amount}
+            placeholder="Amount"
+            onChange={(e) => setAmount(e.target.value)}
+            className="new-transaction-amount"
+          />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="new-transaction-date"
+          />
+          <Dropdown onChange={(value) => setEnvelopeId(value)} className="transaction-dropbox" />
+          <button type="submit" className="submit-new-transaction">Create</button>
+        </form>
+      </div>
+    </>
   );
 };
 
