@@ -4,6 +4,8 @@
   position: relative;
   border-radius: 5px;
   width: 200px;
+  margin: 10px;
+  background-color: white;
 }
 
 .dropdown-input {
@@ -18,7 +20,7 @@
   position: absolute;
   transform: translateY(4px);
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid #6494ed65;
   border-radius: 5px;
   overflow: auto;
   max-height: 150px;
