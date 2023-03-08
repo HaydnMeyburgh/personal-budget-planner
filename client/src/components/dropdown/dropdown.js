@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./dropdown.css";
 
-const Dropdown = ({onChange}) => {
+const Dropdown = ({ onChange, placeholder }) => {
   const [envelopes, setEnvelopes] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [selectedEnvelope, setSelectedEnvelope] = useState();
@@ -30,7 +30,7 @@ const Dropdown = ({onChange}) => {
     if (selectedEnvelope) {
       return selectedEnvelope.title;
     }
-    return "Select Envelope";
+    return placeholder;
   };
 
   const onItemClick = (item) => {
