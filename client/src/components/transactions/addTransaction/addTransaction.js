@@ -64,7 +64,7 @@ const AddTransaction = () => {
             onChange={(e) => setDate(e.target.value)}
             className="new-transaction-date"
           />
-          <Dropdown onChange={(value) => setEnvelopeId(value)} className="transaction-dropbox" />
+          <Dropdown onChange={(value) => setEnvelopeId(value)} placeholder="Select Envelope" />
           <button type="submit" className="submit-new-transaction">Create</button>
         </form>
       </div>
