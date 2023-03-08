@@ -31,7 +31,7 @@
 
 .new-envelope-title, .new-envelope-budget {
   display: flex;
-  margin: 25px;
+  margin: 10px;
   width: 250px;
   height: 40px;
   font-size: 20px;
@@ -41,6 +41,7 @@
 }
 
 .submit-new-envelope {
+  margin: 10px;
   width: 100px;
   text-align: center;
   cursor: pointer;
