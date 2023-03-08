@@ -255,7 +255,7 @@ envelopeRouter.put("/:envelopeId", updateEnvelope);
  *      500:
  *        description: Server Error
  * */
-envelopeRouter.put("/transfer/:fromId/:toId", transferBudget);
+envelopeRouter.post("/transfer", transferBudget);
 
 /**
  * @swagger
