@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Dropdown from "../../dropdown/dropdown";
 import "./transferBudget.css";
 
@@ -6,6 +7,7 @@ const TransferBudget = () => {
   const [fromId, setFromId] = useState();
   const [toId, setToId] = useState();
   const [amount, setAmount] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,17 +36,33 @@ const TransferBudget = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Dropdown onChange={(value) => setFromId(value)}/>
-      <input
-        type="text"
-        value={amount}
-        placeholder="Amount"
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <Dropdown onChange={(value) => setToId(value)}/>
-      <button type="submit">Transfer</button>
-    </form>
+    <>
+      <button className="btn" onClick={() => navigate(-1)}>
+        Go Back
+      </button>
+      <div className="budget-transfer-container">
+        <form onSubmit={handleSubmit} className="budget-transfer">
+          <Dropdown
+            onChange={(value) => setFromId(value)}
+            placeholder="Select From Envelope"
+          />
+          <input
+            className="transfer-amount"
+            type="text"
+            value={amount}
+            placeholder="Amount"
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <Dropdown
+            onChange={(value) => setToId(value)}
+            placeholder="Select To Envelope"
+          />
+          <button type="submit" className="transfer-btn">
+            Transfer
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 
