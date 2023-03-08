@@ -57,7 +57,7 @@ const createEnvelope = async (req, res, next) => {
     if (newEnvelope.rowCount < 1) {
       return res.status(400).send({
         message: "Cannot create envelope, ensure correct data is submitted.",
-        data: newEnvelope
+        data: newEnvelope,
       });
     }
     res.status(201).send({
@@ -124,8 +124,7 @@ const updateEnvelope = async (req, res) => {
 // I may have to come back and change this, to make it work on the frontend
 // Transfer budget from one envelope to another
 const transferBudget = async (req, res) => {
-  const { fromId, toId } = req.params;
-  const { amount } = req.body;
+  const { amount, fromId, toId } = req.body;
   try {
     const fromEnvelope = await db.query(
       "SELECT budget FROM envelopes WHERE id = $1",
@@ -136,14 +135,14 @@ const transferBudget = async (req, res) => {
         message: "Insufficient amount in budget to transfer",
       });
     }
-    await db.query("UPDATE envelopes SET budget = budget - $2 WHERE id = $1", [
-      fromId,
-      amount,
-    ]);
-    await db.query("UPDATE envelopes SET budget = budget + $2 WHERE id = $1", [
-      toId,
-      amount,
-    ]);
+    await db.query(
+      "UPDATE envelopes SET budget = budget - $1 WHERE id = $2",
+      [amount, fromId]
+    );
+    await db.query(
+      "UPDATE envelopes SET budget = budget + $1 WHERE id = $2",
+      [amount, toId]
+    );
     res.status(200).send({
       status: "Success",
       message: "Successfully transferred budget",
@@ -206,8 +205,6 @@ const getEnvelopeTransactions = async (req, res) => {
 //   }
 // };
 
-
-
 module.exports = {
   createEnvelope,
   getAllEnvelopes,
@@ -216,6 +213,4 @@ module.exports = {
   updateEnvelope,
   transferBudget,
   getEnvelopeTransactions,
-  // getEnvelopeTransactionById,
-  
 };
