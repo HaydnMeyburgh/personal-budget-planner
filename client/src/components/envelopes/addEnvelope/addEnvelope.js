@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./addEnvelope.css";
 
 const AddEnvelope = () => {
   const [title, setTitle] = useState("");
@@ -30,26 +31,30 @@ const AddEnvelope = () => {
   };
 
   return (
-    <div className="container">
+    <>
       <button className="btn" onClick={() => navigate(-1)}>
         Go Back
       </button>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={title}
-          placeholder="Title"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="text"
-          value={budget}
-          placeholder="Budget"
-          onChange={(e) => setBudget(e.target.value)}
-        />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+      <div className="new-envelope-container">
+        <form onSubmit={handleSubmit} className="new-envelope">
+          <input
+            className="new-envelope-title"
+            type="text"
+            value={title}
+            placeholder="Title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            className="new-envelope-budget"
+            type="text"
+            value={budget}
+            placeholder="Budget"
+            onChange={(e) => setBudget(e.target.value)}
+          />
+          <button className="submit-new-envelope" type="submit">Create</button>
+        </form>
+      </div>
+    </>
   );
 };
 
