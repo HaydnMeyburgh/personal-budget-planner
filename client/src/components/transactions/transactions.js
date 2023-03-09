@@ -23,9 +23,9 @@ const Transactions = () => {
             <div key={transaction.id} className="transaction-card">
               <Link to={`/transactions/${transaction.id}`}>
                 <div className="transaction-text">
-                  <p>Recipient: {transaction.recipient}</p>
-                  <p>Amount: {transaction.amount}</p>
-                  <p>Date: {transaction.date}</p>
+                  <p className="recipient">Recipient: {transaction.recipient}</p>
+                  <p className="amount" >Amount: {transaction.amount}</p>
+                  <p className="date" >Date: {transaction.date}</p>
                 </div>
               </Link>
             </div>
