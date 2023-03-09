@@ -79,17 +79,38 @@
   border-radius: 4px;
   padding: 20px;
   height: auto;
+  margin-top: 40px;
+  margin-bottom: 100px;
 }
 
 .transactions-details-text {
+  text-align: center;
+  font-size: 20px;
+  color: black;
+
+}
+
+.date, .recipient, .amount {
+  padding: 8px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.envelope-transactions-card {
   display: flex;
   flex-direction: column;
-  align-items: space-around;
-  align-content: space-around;
+  justify-content: center;
   border-radius: 10px;
   background-color: #f0f0f0;
-  height: 200px;
-  width: 250px;
+  height: 180px;
+  width: 280px;
+  cursor: pointer;
   transition: box-shadow .3s;
   border: 0.5px solid #6494ed65;
+}
+
+.envelope-transactions-card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
