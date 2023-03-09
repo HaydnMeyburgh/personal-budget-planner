@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./envelopeDetails.css";
 
@@ -54,29 +54,29 @@ const EnvelopeDetails = () => {
       <div className="details-container">
         <div className="envelope-details-container">
           <div key={tempEnvelope.id}>
-              <input
-                className="envelope-details-title"
-                type="text"
-                value={tempEnvelope.title}
-                onChange={(e) => {
-                  setChanged(true);
-                  setTempEnvelope({ ...tempEnvelope, title: e.target.value });
-                }}
-              />
-              <input
-                className="envelope-details-budget"
-                type="text"
-                value={tempEnvelope.budget}
-                onChange={(e) => {
-                  setChanged(true);
-                  setTempEnvelope({ ...tempEnvelope, budget: e.target.value });
-                }}
-              />
+            <input
+              className="envelope-details-title"
+              type="text"
+              value={tempEnvelope.title}
+              onChange={(e) => {
+                setChanged(true);
+                setTempEnvelope({ ...tempEnvelope, title: e.target.value });
+              }}
+            />
+            <input
+              className="envelope-details-budget"
+              type="text"
+              value={tempEnvelope.budget}
+              onChange={(e) => {
+                setChanged(true);
+                setTempEnvelope({ ...tempEnvelope, budget: e.target.value });
+              }}
+            />
           </div>
           {changed ? (
-            <div className="changed-buttons"> 
+            <div className="changed-buttons">
               <button
-              className="cancel-button"
+                className="cancel-button"
                 onClick={(e) => {
                   setTempEnvelope({ ...envelopeDetails });
                   setChanged(false);
@@ -84,12 +84,14 @@ const EnvelopeDetails = () => {
               >
                 Cancel
               </button>{" "}
-              <button className="save-button" onClick={updateEnvelope}>Save</button>
+              <button className="save-button" onClick={updateEnvelope}>
+                Save
+              </button>
             </div>
           ) : null}
         </div>
         <button
-        className="delete-button"
+          className="delete-button"
           onClick={(e) => {
             fetch(`http://localhost:3000/api/envelopes/${id}`, {
               method: "DELETE",
@@ -110,12 +112,14 @@ const EnvelopeDetails = () => {
         <h2 className="transactions-title">Envelope Transactions</h2>
         <div className="envelope-transactions-container">
           {envelopeTransactions.map((transactions) => (
-            <div key={transactions.id}>
-              <div className="transactions-details-text">
-                <span>Recipient: {transactions.recipient}</span>
-                <span>Amount: {transactions.amount}</span>
-                <span>Date: {transactions.date}</span>
-              </div>
+            <div key={transactions.id} className="envelope-transactions-card">
+              <Link to={`/transactions/${transactions.id}`}>
+                <div className="transactions-details-text">
+                  <p className="recipient" >Recipient: {transactions.recipient}</p>
+                  <p className="amount" >Amount: {transactions.amount}</p>
+                  <p className="date" >Date: {transactions.date}</p>
+                </div>
+              </Link>
             </div>
           ))}
         </div>
