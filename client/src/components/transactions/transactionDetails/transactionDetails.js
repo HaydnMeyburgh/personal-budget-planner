@@ -12,24 +12,30 @@ const TransactionDetails = () => {
 
   useEffect(() => {
     const fetchTransactionDetails = async () => {
-      const response = await fetch(`http://localhost:3000/api/transactions/${id}`);
+      const response = await fetch(
+        `http://localhost:3000/api/transactions/${id}`
+      );
       const transactionDetailsData = await response.json();
       setTransactionDetails(transactionDetailsData.data);
       setTempTransaction(transactionDetailsData.data);
     };
-    
+
     fetchTransactionDetails();
   }, []);
 
   const updateTransaction = async () => {
-    const response = await fetch(`http://localhost:3000/api/transactions/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(tempTransaction),
-    });
+    const response = await fetch(
+      `http://localhost:3000/api/transactions/${id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tempTransaction),
+      }
+    );
     await response.json();
     setTransactionDetails(tempTransaction);
     setChanged(false);
+    navigate("/transactions");
   };
 
   return (
@@ -40,38 +46,47 @@ const TransactionDetails = () => {
       <div className="details-container">
         <div className="transaction-details-container">
           <div key={tempTransaction.id}>
-              <input
-                className="transaction-details-recipient"
-                type="text"
-                value={tempTransaction.recipient}
-                onChange={(e) => {
-                  setChanged(true);
-                  setTempTransaction({ ...tempTransaction, recipient: e.target.value });
-                }}
-              />
-              <input
-                className="Transaction-details-amount"
-                type="text"
-                value={tempTransaction.amount}
-                onChange={(e) => {
-                  setChanged(true);
-                  setTempTransaction({ ...tempTransaction, amount: e.target.value });
-                }}
-              />
-              <input
-                className="Transaction-details-date"
-                type="date"
-                value={tempTransaction.date}
-                onChange={(e) => {
-                  setChanged(true);
-                  setTempTransaction({ ...tempTransaction, date: e.target.value });
-                }}
-              />
+            <input
+              className="transaction-details-recipient"
+              type="text"
+              value={tempTransaction.recipient}
+              onChange={(e) => {
+                setChanged(true);
+                setTempTransaction({
+                  ...tempTransaction,
+                  recipient: e.target.value,
+                });
+              }}
+            />
+            <input
+              className="transaction-details-amount"
+              type="text"
+              value={tempTransaction.amount}
+              onChange={(e) => {
+                setChanged(true);
+                setTempTransaction({
+                  ...tempTransaction,
+                  amount: e.target.value,
+                });
+              }}
+            />
+            <input
+              className="transaction-details-date"
+              type="date"
+              value={tempTransaction.date}
+              onChange={(e) => {
+                setChanged(true);
+                setTempTransaction({
+                  ...tempTransaction,
+                  date: e.target.value,
+                });
+              }}
+            />
           </div>
           {changed ? (
-            <div className="changed-buttons"> 
+            <div className="changed-buttons">
               <button
-              className="cancel-button"
+                className="cancel-button"
                 onClick={(e) => {
                   setTempTransaction({ ...transactionDetails });
                   setChanged(false);
@@ -79,12 +94,14 @@ const TransactionDetails = () => {
               >
                 Cancel
               </button>{" "}
-              <button className="save-button" onClick={updateTransaction}>Save</button>
+              <button className="save-button" onClick={updateTransaction}>
+                Save
+              </button>
             </div>
           ) : null}
         </div>
         <button
-        className="delete-button"
+          className="delete-button"
           onClick={(e) => {
             fetch(`http://localhost:3000/api/transactions/${id}`, {
               method: "DELETE",
@@ -93,7 +110,7 @@ const TransactionDetails = () => {
                 if (!response.ok) {
                   throw new Error("Something went wrong");
                 }
-                navigate("/");
+                navigate("/transactions");
               })
               .catch(() => {
                 console.log(e);
