@@ -32,7 +32,7 @@
 
 .new-transaction-recipient, .new-transaction-amount {
   margin: 10px;
-  width: 250px;
+  width: 200px;
   height: 40px;
   font-size: 20px;
   padding-left: 15px;
@@ -42,7 +42,7 @@
 
 .new-transaction-date {
   margin: 10px;
-  width: 250px;
+  width: 200px;
   height: 40px;
   border-radius: 4px;
   border: 0.5px solid #6494ed65;
