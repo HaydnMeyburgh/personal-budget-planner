@@ -26,6 +26,9 @@ const {
  *        recipient:
  *          type: string
  *          description: The recipient name of the transaction
+ *        amount:
+ *          type: numeric
+ *          description: The amount of money spent that gets removed from the corresponding envelope budget
  *        date:
  *          type: date
  *          description: The date of the transaction
@@ -91,17 +94,10 @@ transactionsRouter.get("/:transactionId", getTransactionById);
 
 /**
  * @swagger
- * /api/envelopes/{id}/transactions:
+ * /api/transactions:
  *  post:
  *    summary: Create a new transaction associated to an envelope and adjusts the envelopes budget according to transaction amount
- *    tags: [Envelope Transactions]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The envelope id
+ *    tags: [Transactions]
  *    requestBody:
  *      required: true
  *      content:
@@ -112,13 +108,16 @@ transactionsRouter.get("/:transactionId", getTransactionById);
  *              recipient:
  *                type: string
  *              amount:
- *                type: integer
+ *                type: numeric
  *              date:
  *                type: date
+ *              envelope_id: 
+ *                type: integer
  *            example:
  *              recipient: pick n pay
  *              amount: 100
  *              date: 2022-09-24
+ *              envelope_id: 3
  *    responses:
  *      201:
  *        description: The transaction was created successfully
@@ -152,7 +151,7 @@ transactionsRouter.post("/", createTransaction);
  *              recipient:
  *                type: string
  *              amount:
- *                type: integer
+ *                type: numeric
  *              date:
  *                type: date
  *            example:
@@ -160,7 +159,7 @@ transactionsRouter.post("/", createTransaction);
  *              amount: 100
  *              date: 2022-09-24
  *    responses:
- *      201:
+ *      200:
  *        description: The transaction was updated successfully
  *      404:
  *        description: The transaction could not be updated
