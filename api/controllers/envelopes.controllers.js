@@ -180,31 +180,6 @@ const getEnvelopeTransactions = async (req, res) => {
   }
 };
 
-// I dont think this is needed as of now, may need it once ive built the frontend
-// const getEnvelopeTransactionById = async (req, res) => {
-//   const { envelopeId, transactionId } = req.params;
-//   try {
-//     const transaction = await db.query(
-//       "SELECT * FROM transactions WHERE id = $1 AND envelope_id = $2",
-//       [transactionId, envelopeId]
-//     );
-//     if (transaction.rowCount < 1) {
-//       return res.status(404).send({
-//         message: "Could not find that transaction",
-//       });
-//     }
-//     res.status(200).send({
-//       status: "Success",
-//       message: "Successfully found transaction",
-//       data: transaction.rows[0],
-//     });
-//   } catch (err) {
-//     return res.status(505).send({
-//       error: err.message,
-//     });
-//   }
-// };
-
 module.exports = {
   createEnvelope,
   getAllEnvelopes,
