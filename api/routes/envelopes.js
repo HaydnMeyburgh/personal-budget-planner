@@ -8,8 +8,6 @@ const {
   updateEnvelope,
   transferBudget,
   getEnvelopeTransactions,
-  // getEnvelopeTransactionById,
-  createTransaction,
 } = require("../controllers/envelopes.controllers");
 const {
   updateTransaction,
@@ -33,7 +31,7 @@ const {
  *          type: string
  *          description: The envelope title
  *        budget:
- *          type: integer
+ *          type: numeric
  *          description: The budget for the envelope
  *      example:
  *        id: 12
@@ -53,6 +51,9 @@ const {
  *        recipient:
  *          type: string
  *          description: The recipient name of the transaction
+ *        amount:
+ *          type: numeric
+ *          description: The amount of money spent that gets removed from the corresponding envelope budget
  *        date:
  *          type: date
  *          description: The date of the transaction
@@ -94,7 +95,7 @@ const {
  *              items:
  *                $ref: '#/components/schemas/envelope'
  *      404:
- *        description: No envelopes were found
+ *        description: Cannot find envelopes
  *      500:
  *        description: Server Error
  * */
@@ -143,7 +144,7 @@ envelopeRouter.get("/:envelopeId", getEnvelopeById);
  *              title:
  *                type: string
  *              budget:
- *                type: integer
+ *                type: numeric
  *            example:
  *              title: Internet
  *              budget: 389
@@ -203,7 +204,7 @@ envelopeRouter.delete("/:envelopeId", deleteEnvelope);
  *              title:
  *                type: string
  *              budget:
- *                type: integer
+ *                type: numeric
  *            example:
  *              title: Internet
  *              budget: 389
@@ -219,23 +220,10 @@ envelopeRouter.put("/:envelopeId", updateEnvelope);
 
 /**
  * @swagger
- * /api/envelopes/transfer/{fromId}/{toId}:
- *  put:
+ * /api/envelopes/transfer/:
+ *  post:
  *    summary: Transfers budget from one envelope to another
  *    tags: [Envelopes]
- *    parameters:
- *      - in: path
- *        name: fromId
- *        schema:
- *          type: string
- *        required: true
- *        description: The from envelope id
- *      - in: path
- *        name: toId
- *        schema:
- *          type: string
- *        required: true
- *        description: The to envelope id
  *    requestBody:
  *      required: true
  *      content:
@@ -243,10 +231,16 @@ envelopeRouter.put("/:envelopeId", updateEnvelope);
  *          schema:
  *            type: object
  *            properties:
- *              amount:
+ *              fromId:
  *                type: integer
+ *              toId:
+ *                type: integer
+ *              amount:
+ *                type: numeric
  *            example:
+ *              fromId: 2
  *              amount: 100
+ *              toId: 3
  *    responses:
  *      200:
  *        description: The amount was transfered successfully
@@ -286,123 +280,5 @@ envelopeRouter.post("/transfer", transferBudget);
  * */
 
 envelopeRouter.get("/:envelopeId/transactions", getEnvelopeTransactions);
-
-/**
- * @swagger
- * /api/envelopes/{id}/transactions/{transactionId}:
- *  get:
- *    summary: Returns transaction by id associated with an envelope
- *    tags: [Envelope Transactions]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The envelope id
- *      - in: path
- *        name: transactionId
- *        schema:
- *          type: string
- *        required: true
- *        description: The transaction id
- *    responses:
- *      200:
- *        description: Successfully found transaction by id associated to the envelope
- *        content:
- *          application/json:
- *            schema:
- *                $ref: '#/components/schemas/transaction'
- *      404:
- *        description: The transaction could not be found
- *      500:
- *        description: Server Error
- * */
-
-// envelopeRouter.get(
-//   "/:envelopeId/transactions/:transactionId",
-//   getEnvelopeTransactionById
-// );
-
-/**
- * @swagger
- * /api/envelopes/{id}/transactions/{transactionId}:
- *  put:
- *    summary: Update a transaction associated to an envelope. If the transaction amount is adjusted, the envelopes budget will be adjusted accordingly
- *    tags: [Envelope Transactions]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The envelope id
- *      - in: path
- *        name: transactionId
- *        schema:
- *          type: string
- *        required: true
- *        description: The transaction id
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            properties:
- *              recipient:
- *                type: string
- *              amount:
- *                type: integer
- *              date:
- *                type: date
- *            example:
- *              recipient: pick n pay
- *              amount: 100
- *              date: 2022-09-24
- *    responses:
- *      201:
- *        description: The transaction was updated successfully
- *      404:
- *        description: The transaction could not be updated
- *      500:
- *        description: Server Error
- * */
-envelopeRouter.put(
-  "/:envelopeId/transactions/:transactionId",
-  updateTransaction
-);
-
-/**
- * @swagger
- * /api/envelopes/{id}/transactions/{transactionId}:
- *  delete:
- *    summary: Delete transaction by id associated with an envelope and adds the amount back into the envelopes budget.
- *    tags: [Envelope Transactions]
- *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
- *        required: true
- *        description: The envelope id
- *      - in: path
- *        name: transactionId
- *        schema:
- *          type: string
- *        required: true
- *        description: The transaction id
- *    responses:
- *      200:
- *        description: Successfully deleted transaction associated to the envelope
- *      404:
- *        description: The transaction could not be found
- *      500:
- *        description: Server Error
- * */
-envelopeRouter.delete(
-  "/:envelopeId/transactions/:transactionId",
-  deleteTransaction
-);
 
 module.exports = envelopeRouter;
