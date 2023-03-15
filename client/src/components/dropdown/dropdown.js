@@ -8,7 +8,7 @@ const Dropdown = ({ onChange, placeholder }) => {
 
   useEffect(() => {
     const fetchEnvelopes = async () => {
-      const response = await fetch("http://localhost:3000/api/envelopes");
+      const response = await fetch("https://budget-planner-api.vercel.app/api/envelopes");
       const envelopeData = await response.json();
       setEnvelopes(envelopeData.data);
     };

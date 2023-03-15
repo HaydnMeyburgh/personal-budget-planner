@@ -13,7 +13,7 @@ const TransactionDetails = () => {
   useEffect(() => {
     const fetchTransactionDetails = async () => {
       const response = await fetch(
-        `http://localhost:3000/api/transactions/${id}`
+        `https://budget-planner-api.vercel.app/api/transactions/${id}`
       );
       const transactionDetailsData = await response.json();
       setTransactionDetails(transactionDetailsData.data);
@@ -25,7 +25,7 @@ const TransactionDetails = () => {
 
   const updateTransaction = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/transactions/${id}`,
+      `https://budget-planner-api.vercel.app/api/transactions/${id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -103,7 +103,7 @@ const TransactionDetails = () => {
         <button
           className="delete-button"
           onClick={(e) => {
-            fetch(`http://localhost:3000/api/transactions/${id}`, {
+            fetch(`https://budget-planner-api.vercel.app/api/transactions/${id}`, {
               method: "DELETE",
             })
               .then((response) => {

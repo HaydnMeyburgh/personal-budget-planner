@@ -36,7 +36,7 @@ const EnvelopeDetails = () => {
   }, []);
 
   const updateEnvelope = async () => {
-    const response = await fetch(`http://localhost:3000/api/envelopes/${id}`, {
+    const response = await fetch(`https://budget-planner-api.vercel.app/api/envelopes/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempEnvelope),
@@ -93,7 +93,7 @@ const EnvelopeDetails = () => {
         <button
           className="delete-button"
           onClick={(e) => {
-            fetch(`http://localhost:3000/api/envelopes/${id}`, {
+            fetch(`https://budget-planner-api.vercel.app/api/envelopes/${id}`, {
               method: "DELETE",
             })
               .then((response) => {

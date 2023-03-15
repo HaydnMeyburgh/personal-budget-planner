@@ -9,7 +9,7 @@ const NavBar = () => {
         <div className="docs">
           <p>
             API{" "}
-            <a href="http://localhost:3000/api/docs" target="_blank">
+            <a href="https://budget-planner-api.vercel.app/api/docs" target="_blank">
               Documentation
             </a>
           </p>
