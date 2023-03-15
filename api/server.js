@@ -25,7 +25,7 @@ app.use("/api/envelopes", envelopeRouter);
 const transactionsRouter = require("./routes/transactions");
 app.use("/api/transactions", transactionsRouter);
 
-const PORT = process.env.DEV_PORT || 3000;
+const PORT = process.env.PROD_PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Personal Budget app listening on port ${PORT}`);
 });
