@@ -8,7 +8,7 @@ const Transactions = () => {
   useEffect(() => {
     const transactionsFetch = async () => {
       const response = await fetch(
-        "https://budget-planner-api.vercel.app/api/transactions"
+        "https://budget-planner-api.up.railway.app/api/transactions"
       );
       const transactionData = await response.json();
       if (response.status === 200) setTransactions(transactionData.data);

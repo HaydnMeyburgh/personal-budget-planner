@@ -13,7 +13,7 @@ const TransferBudget = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://budget-planner-api.vercel.app/api/envelopes/transfer/",
+        "https://budget-planner-api.up.railway.app/api/envelopes/transfer/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

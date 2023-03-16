@@ -7,7 +7,7 @@ const Envelopes = () => {
   const [envelopes, setEnvelopes] = useState([]);
   useEffect(() => {
     const fetchEnvelopes = async () => {
-      const response = await fetch("https://budget-planner-api.vercel.app/api/envelopes");
+      const response = await fetch("https://budget-planner-api.up.railway.app/api/envelopes");
       const envelopeData = await response.json();
       setEnvelopes(envelopeData.data);
     };
