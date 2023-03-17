@@ -25,15 +25,15 @@ app.use((req, res, next) => {
 });
 // Swagger UI
 const specs = require("./doc/swagger");
-app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // Mounting the envelopeRouter
 const envelopeRouter = require("./routes/envelopes");
-app.use("/api/envelopes", envelopeRouter);
+app.use("/envelopes", envelopeRouter);
 
 // Mounting the transactionsRouter
 const transactionsRouter = require("./routes/transactions");
-app.use("/api/transactions", transactionsRouter);
+app.use("/transactions", transactionsRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
