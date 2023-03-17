@@ -1,11 +1,11 @@
 [[redirects]]
-  from = "/v1/"
-  to = "https://budget-planner-api.up.railway.app"
+  from = "/api/"
+  to = "https://budget-planner-api.up.railway.app/:splat"
   status = 200
   force = true
-  headers = {X-From = "netlify"}
+  headers = {X-From = "Netlify"}
 
 [[headers]]
-  for ="/*"
+  for ="/"
     [headers.values]
     Access-Control-Allow-Origin = "*"
