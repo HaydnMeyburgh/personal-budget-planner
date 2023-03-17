@@ -16,10 +16,13 @@ app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-with, Content-Type, Accept"
+  );
   res.header("Access-Control-Allow-MEthods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
-})
+});
 // Swagger UI
 const specs = require("./doc/swagger");
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
@@ -32,7 +35,7 @@ app.use("/api/envelopes", envelopeRouter);
 const transactionsRouter = require("./routes/transactions");
 app.use("/api/transactions", transactionsRouter);
 
-const PORT = process.env.PROD_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Personal Budget app listening on port ${PORT}`);
 });
