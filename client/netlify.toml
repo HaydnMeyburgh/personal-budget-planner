@@ -3,7 +3,7 @@
   to = "https://budget-planner-api.up.railway.app"
   status = 200
   force = true
-  headres = {X-From = "netlify"}
+  headers = {X-From = "netlify"}
 
 [[headers]]
   for ="/*"
