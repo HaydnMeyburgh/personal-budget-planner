@@ -7,7 +7,7 @@ const Envelopes = () => {
   const [envelopes, setEnvelopes] = useState([]);
   useEffect(() => {
     const fetchEnvelopes = async () => {
-      const response = await fetch("/v1/api/envelopes");
+      const response = await fetch("/api/envelopes");
       const envelopeData = await response.json();
       setEnvelopes(envelopeData.data);
     };

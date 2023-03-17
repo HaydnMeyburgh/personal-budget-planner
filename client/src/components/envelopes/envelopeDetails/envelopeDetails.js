@@ -13,7 +13,7 @@ const EnvelopeDetails = () => {
 
   useEffect(() => {
     const fetchEnvelopeDetails = async () => {
-      const response = await fetch(`/v1/api/envelopes/${id}`);
+      const response = await fetch(`/api/envelopes/${id}`);
       const envelopeDetailsData = await response.json();
       setEnvelopeDetails(envelopeDetailsData.data[0]);
       setTempEnvelope(envelopeDetailsData.data[0]);
@@ -21,7 +21,7 @@ const EnvelopeDetails = () => {
     const fetchTransactions = async () => {
       try {
         const response = await fetch(
-          `/v1/api/envelopes/${id}/transactions/`
+          `/api/envelopes/${id}/transactions/`
         );
         const envelopeTransactions = await response.json();
         if (response.status === 200) {
@@ -36,7 +36,7 @@ const EnvelopeDetails = () => {
   }, []);
 
   const updateEnvelope = async () => {
-    const response = await fetch(`/v1/api/envelopes/${id}`, {
+    const response = await fetch(`/api/envelopes/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(tempEnvelope),
@@ -93,7 +93,7 @@ const EnvelopeDetails = () => {
         <button
           className="delete-button"
           onClick={(e) => {
-            fetch(`/v1/api/envelopes/${id}`, {
+            fetch(`/api/envelopes/${id}`, {
               method: "DELETE",
             })
               .then((response) => {

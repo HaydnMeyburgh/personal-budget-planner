@@ -8,7 +8,7 @@ const Transactions = () => {
   useEffect(() => {
     const transactionsFetch = async () => {
       const response = await fetch(
-        "/v1/api/transactions"
+        "/api/transactions"
       );
       const transactionData = await response.json();
       if (response.status === 200) setTransactions(transactionData.data);

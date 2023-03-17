@@ -13,7 +13,7 @@ const TransferBudget = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "/v1/api/envelopes/transfer/",
+        "/api/envelopes/transfer/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

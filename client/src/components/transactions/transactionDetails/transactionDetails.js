@@ -13,7 +13,7 @@ const TransactionDetails = () => {
   useEffect(() => {
     const fetchTransactionDetails = async () => {
       const response = await fetch(
-        `/v1/api/transactions/${id}`
+        `/api/transactions/${id}`
       );
       const transactionDetailsData = await response.json();
       setTransactionDetails(transactionDetailsData.data);
@@ -25,7 +25,7 @@ const TransactionDetails = () => {
 
   const updateTransaction = async () => {
     const response = await fetch(
-      `/v1/api/transactions/${id}`,
+      `/api/transactions/${id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -103,7 +103,7 @@ const TransactionDetails = () => {
         <button
           className="delete-button"
           onClick={(e) => {
-            fetch(`/v1/api/transactions/${id}`, {
+            fetch(`/api/transactions/${id}`, {
               method: "DELETE",
             })
               .then((response) => {

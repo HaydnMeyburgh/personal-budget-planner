@@ -8,7 +8,7 @@ const Dropdown = ({ onChange, placeholder }) => {
 
   useEffect(() => {
     const fetchEnvelopes = async () => {
-      const response = await fetch("/v1/api/envelopes");
+      const response = await fetch("/api/envelopes");
       const envelopeData = await response.json();
       setEnvelopes(envelopeData.data);
     };
