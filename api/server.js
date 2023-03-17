@@ -13,6 +13,13 @@ app.use(bodyParser.json());
 const cors = require("cors");
 app.use(cors());
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-Type, Accept");
+  res.header("Access-Control-Allow-MEthods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+})
 // Swagger UI
 const specs = require("./doc/swagger");
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
