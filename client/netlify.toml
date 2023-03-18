@@ -1,5 +1,5 @@
 [[redirects]]
-  from = "/api/"
+  from = "/api/*"
   to = "https://budget-planner-api.up.railway.app/:splat"
   status = 200
   force = true
