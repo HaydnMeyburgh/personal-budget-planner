@@ -10,14 +10,7 @@ const NavBar = () => {
       <nav>
         <div className="docs">
           <p>
-            API{" "}
-            <a
-              href={
-                <SwaggreUI url="https://budget-planner-api.up.railway.app/docs/" />
-              }
-            >
-              Documentation
-            </a>
+            API <a href={<SwaggreUI url="/api/docs/" />}>Documentation</a>
           </p>
         </div>
         <div className="header-contents">
