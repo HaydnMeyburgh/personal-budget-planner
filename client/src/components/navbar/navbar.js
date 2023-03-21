@@ -9,7 +9,7 @@ const NavBar = () => {
         <div className="docs">
           <p>
             API{" "}
-            <a href="/api/docs" target="_blank">
+            <a href="/api/docs">
               Documentation
             </a>
           </p>
