@@ -8,11 +8,6 @@ const NavBar = () => {
   return (
     <div>
       <nav>
-        <div className="docs">
-          <p>
-            API <a href={<SwaggreUI url="/api/docs/" />}>Documentation</a>
-          </p>
-        </div>
         <div className="header-contents">
           <div className="logo">
             <a href="/">
