@@ -1,5 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import SwaggreUI from "swagger-ui-react";
+import "swagger-ui-react/swagger-ui.css";
 import "./navBar.css";
 
 const NavBar = () => {
@@ -9,7 +11,11 @@ const NavBar = () => {
         <div className="docs">
           <p>
             API{" "}
-            <a href="/api/docs">
+            <a
+              href={
+                <SwaggreUI url="https://budget-planner-api.up.railway.app/docs/" />
+              }
+            >
               Documentation
             </a>
           </p>
@@ -51,8 +57,8 @@ const NavBar = () => {
         </div>
         <p className="explanation">
           The all in one budget planner that lets you create budget envelopes to
-          track your spending, transfer budgets between envelopes, and create transactions when you spend money!
-          
+          track your spending, transfer budgets between envelopes, and create
+          transactions when you spend money!
         </p>
       </nav>
     </div>
