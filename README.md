@@ -4,13 +4,14 @@
 An API that allows you to create, update, and delete budget envelopes as well as envelope transactions when you spend money. You can also create transfers if you want to transfer a budget from one envelope to another. When a transaction is created, the amount "paid" for the transaction is deducted off of the corresponding envelope for which the transaction is related to so that envelope budgets are kept up to date as more transactions are made - The same is done if a transaction amount is adjusted or updated, the corresponding budget is adjusted based on the changed transaction amount.
 
 <details>
-<summary>Recently Added!</summary>
+<summary><h2>Recently Added to project!</h2></summary>
 <br>
 I recently added onto the project by building a frontend in React to see how the API could potentially be utilised within a project. I also think it gives a nice understanding of how the API works. For ease I included the frontend into this repository, but the main focus is still the API.
 
 I decided to host the frontend on Netlify and the server and database on Railway as both are easy to setup and offer really good free options for hosting which is great for me right now (Not to mention the incredible ease, and speed, of spinning up a Postgres database on Railway).
 </details>
 
+## Table of Contents
 <!--ts-->
    * [Demo](#demo)
    * [Tech Stack](#tech-stack)
