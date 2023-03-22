@@ -45,7 +45,7 @@ const {
 
 /**
  * @swagger
- * /api/transactions:
+ * /transactions:
  *  get:
  *    summary: Returns all transactions
  *    tags: [Transactions]
@@ -67,7 +67,7 @@ transactionsRouter.get("/", getAllTransactions);
 
 /**
  * @swagger
- * /api/transactions/{transactionId}:
+ * /transactions/{transactionId}:
  *  get:
  *    summary: Returns transaction by id
  *    tags: [Transactions]
@@ -75,7 +75,7 @@ transactionsRouter.get("/", getAllTransactions);
  *      - in: path
  *        name: transactionId
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: The transaction id
  *    responses:
@@ -94,7 +94,7 @@ transactionsRouter.get("/:transactionId", getTransactionById);
 
 /**
  * @swagger
- * /api/transactions:
+ * /transactions:
  *  post:
  *    summary: Create a new transaction associated to an envelope and adjusts the envelopes budget according to transaction amount
  *    tags: [Transactions]
@@ -130,7 +130,7 @@ transactionsRouter.post("/", createTransaction);
 
 /**
  * @swagger
- * /api/transactions/{transactionId}:
+ * /transactions/{transactionId}:
  *  put:
  *    summary: Update a transaction. If the transaction amount is adjusted, the associated envelopes budget will be adjusted accordingly
  *    tags: [Transactions]
@@ -138,7 +138,7 @@ transactionsRouter.post("/", createTransaction);
  *      - in: path
  *        name: transactionId
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: The transaction id
  *    requestBody:
@@ -170,7 +170,7 @@ transactionsRouter.put("/:transactionId", updateTransaction);
 
 /**
  * @swagger
- * /api/transactions/{transactionId}:
+ * /transactions/{transactionId}:
  *  delete:
  *    summary: Delete transaction by id and adds the amount back into the envelopes budget.
  *    tags: [Transactions]
@@ -178,7 +178,7 @@ transactionsRouter.put("/:transactionId", updateTransaction);
  *      - in: path
  *        name: transactionId
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: The transaction id
  *    responses:

@@ -81,7 +81,7 @@ const {
 
 /**
  * @swagger
- * /api/envelopes:
+ * /envelopes:
  *  get:
  *    summary: Returns all the envelopes
  *    tags: [Envelopes]
@@ -103,7 +103,7 @@ envelopeRouter.get("/", getAllEnvelopes);
 
 /**
  * @swagger
- * /api/envelopes/{id}:
+ * /envelopes/{id}:
  *  get:
  *    summary: Returns envelope by id
  *    tags: [Envelopes]
@@ -111,7 +111,7 @@ envelopeRouter.get("/", getAllEnvelopes);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: The envelope id
  *    responses:
@@ -120,6 +120,8 @@ envelopeRouter.get("/", getAllEnvelopes);
  *        content:
  *          application/json:
  *            schema:
+ *              type: array
+ *              items:
  *                $ref: '#/components/schemas/envelope'
  *      404:
  *        description: The envelope was not found
@@ -130,7 +132,7 @@ envelopeRouter.get("/:envelopeId", getEnvelopeById);
 
 /**
  * @swagger
- * /api/envelopes:
+ * /envelopes:
  *  post:
  *    summary: Create a new envelope
  *    tags: [Envelopes]
@@ -160,7 +162,7 @@ envelopeRouter.post("/", createEnvelope);
 
 /**
  * @swagger
- * /api/envelopes/{id}:
+ * /envelopes/{id}:
  *  delete:
  *    summary: Delete envelope by id
  *    tags: [Envelopes]
@@ -168,7 +170,7 @@ envelopeRouter.post("/", createEnvelope);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: The envelope id
  *    responses:
@@ -183,7 +185,7 @@ envelopeRouter.delete("/:envelopeId", deleteEnvelope);
 
 /**
  * @swagger
- * /api/envelopes/{id}:
+ * /envelopes/{id}:
  *  put:
  *    summary: Updates an envelope
  *    tags: [Envelopes]
@@ -220,7 +222,7 @@ envelopeRouter.put("/:envelopeId", updateEnvelope);
 
 /**
  * @swagger
- * /api/envelopes/transfer/:
+ * /envelopes/transfer/:
  *  post:
  *    summary: Transfers budget from one envelope to another
  *    tags: [Envelopes]
@@ -253,7 +255,7 @@ envelopeRouter.post("/transfer", transferBudget);
 
 /**
  * @swagger
- * /api/envelopes/{id}/transactions:
+ * /envelopes/{id}/transactions:
  *  get:
  *    summary: Returns all transactions associated with an envelope
  *    tags: [Envelope Transactions]
@@ -261,7 +263,7 @@ envelopeRouter.post("/transfer", transferBudget);
  *      - in: path
  *        name: id
  *        schema:
- *          type: string
+ *          type: integer
  *        required: true
  *        description: The envelope id
  *    responses:
